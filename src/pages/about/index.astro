@@ -1,0 +1,138 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Portrait from "../../components/Portrait.astro";
+import { profile } from "../../data/profile";
+
+const timeline = [
+  ["2026 to present", "Vuono Group", "Senior Data Scientist"],
+  ["2020 to 2026", "Finnish Environment Institute", "Machine-learning and data-quality work, followed by leadership of a ten-person research team"],
+  ["2017 to 2022", "Enne Analytics Oy", "Co-founder and Data Analyst"],
+  ["2019", "Amazon", "Applied Scientist Intern"],
+  ["2018", "Novartis", "Doctoral research period"],
+  ["2016 to 2021", "Aalto University", "Doctoral Researcher"]
+];
+
+---
+
+<BaseLayout
+  title="About | Eero Siivola"
+  description="About Eero Siivola, a Helsinki-based data scientist and AI architect with more than ten years of machine-learning experience."
+>
+  <header class="about-hero">
+    <div class="shell about-hero-grid">
+      <div class="about-hero-copy">
+        <h1>I work across machine learning, data systems, and technical delivery.</h1>
+        <p>
+          I am a data scientist and AI architect in Helsinki, with more than ten years of
+          experience across industry, consulting, public-sector systems, and research.
+        </p>
+      </div>
+      <figure class="about-hero-image">
+        <Portrait variant="about" loading="eager" />
+      </figure>
+    </div>
+  </header>
+
+  <section class="section narrative-section">
+    <div class="shell prose">
+      <p>
+        My doctorate in machine learning at Aalto University focused on learning from limited and
+        uncertain data. During that period, I was an Applied Scientist Intern at Amazon and
+        conducted doctoral research at Novartis. Papers and code are available in the{" "}
+        <a href="/research/">research archive</a>.
+      </p>
+      <p>
+        At the Finnish Environment Institute, I worked on machine learning and data quality for
+        environmental monitoring. I later led a team of ten researchers. Earlier, I co-founded a
+        machine-learning consultancy and worked on e-commerce and logistics projects.
+      </p>
+      <p>
+        I now work as a Senior Data Scientist at Vuono Group. I treat the operating process as
+        part of the technical work because a model is useful only when someone can act on its
+        result.
+      </p>
+    </div>
+  </section>
+
+  <section class="section timeline-section">
+    <div class="shell timeline-grid">
+      <div>
+        <h2>Selected experience</h2>
+      </div>
+      <ol class="timeline">
+        {
+          timeline.map(([date, organisation, role]) => (
+            <li>
+              <time>{date}</time>
+              <div>
+                <h3>{organisation}</h3>
+                <p>{role}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section about-technical">
+    <div class="shell about-technical-grid">
+      <div>
+        <p class="kicker">Technical background</p>
+        <h2>Models, data systems, and the work around them.</h2>
+      </div>
+      <div>
+        <p>
+          My technical work includes model development and evaluation, probabilistic modelling,
+          data pipelines, cloud platforms, and production-minded software. I also work on problem
+          definition, project ownership, and explaining technical trade-offs.
+        </p>
+        <p class="technology-line">
+          I usually work in Python and SQL, with tools including PyTorch, scikit-learn, AWS,
+          Databricks, Docker, PostgreSQL, Git, and CI/CD.
+        </p>
+        <div class="about-technical-links">
+          <a class="text-link" href="/writing/">Selected writing and research</a>
+          <a class="text-link" href="/research/">Research and open source archive</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="personal-section">
+    <div class="shell personal-grid">
+      <div>
+        <h2>Side projects</h2>
+        <p>
+          I build side projects to learn new technologies and sharpen my technical skills. The
+          latest public one is{" "}
+          <a href="https://www.nimivauvalle.fi/">Nimi vauvalle</a>, a Finnish tool for exploring
+          first names.
+        </p>
+      </div>
+      <a
+        class="profile-badge"
+        href={profile.social.linkedin}
+        rel="noopener noreferrer"
+        referrerpolicy="no-referrer"
+        aria-label="View Eero Siivola's public LinkedIn profile"
+      >
+        <img
+          src="/generated-images/eero-siivola-1055-hero-640.avif"
+          width="640"
+          height="853"
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+        <span class="profile-badge-copy">
+          <span class="profile-badge-label">Current role</span>
+          <strong>{profile.name}</strong>
+          <span>Senior Data Scientist</span>
+          <span>{profile.currentOrganisation}</span>
+          <span class="profile-badge-link">View LinkedIn profile</span>
+        </span>
+      </a>
+    </div>
+  </section>
+</BaseLayout>

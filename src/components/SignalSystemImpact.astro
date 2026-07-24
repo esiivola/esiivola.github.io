@@ -1,0 +1,57 @@
+---
+const stages = [
+  {
+    key: "context",
+    number: "01",
+    label: "Process context",
+    example: "Where does the work happen, and what constrains it?"
+  },
+  {
+    key: "decision",
+    number: "02",
+    label: "Decision",
+    example: "What must become faster, clearer, safer, or more reliable?"
+  },
+  {
+    key: "signal",
+    number: "03",
+    label: "Signal",
+    example: "Which observation would materially support that decision?"
+  },
+  {
+    key: "system",
+    number: "04",
+    label: "Model + workflow",
+    example: "How is the signal produced, evaluated, and delivered?"
+  },
+  {
+    key: "action",
+    number: "05",
+    label: "Owner + action",
+    example: "Who acts, and what changes in day-to-day work?"
+  },
+  {
+    key: "impact",
+    number: "06",
+    label: "Feedback + impact",
+    example: "What happened, and what should the system learn next?"
+  }
+];
+---
+
+<div class="operating-model" data-operating-model>
+  <ol>
+    {
+      stages.map((stage) => (
+        <li>
+          <button type="button" data-stage={stage.key} aria-describedby={`stage-${stage.key}`}>
+            <span class="stage-number">{stage.number}</span>
+            <span class="stage-label">{stage.label}</span>
+            <span class="stage-dot" aria-hidden="true"></span>
+          </button>
+          <p id={`stage-${stage.key}`}>{stage.example}</p>
+        </li>
+      ))
+    }
+  </ol>
+</div>

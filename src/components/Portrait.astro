@@ -1,0 +1,36 @@
+---
+interface Props {
+  variant?: "hero" | "about";
+  loading?: "eager" | "lazy";
+}
+
+const { variant = "hero", loading = "lazy" } = Astro.props;
+const isHero = variant === "hero";
+const stem = isHero ? "eero-siivola-1055-hero" : "eero-03395-about";
+const dimensions = isHero ? { width: 900, height: 1200 } : { width: 900, height: 1200 };
+const alt = isHero
+  ? "Eero Siivola smiling in a navy jacket"
+  : "Eero Siivola standing among green foliage";
+---
+
+<picture>
+  <source
+    type="image/avif"
+    srcset={`/generated-images/${stem}-640.avif 640w, /generated-images/${stem}-900.avif 900w`}
+    sizes={isHero ? "(min-width: 1100px) 43vw, (min-width: 700px) 46vw, 92vw" : "(min-width: 900px) 40vw, 92vw"}
+  />
+  <source
+    type="image/webp"
+    srcset={`/generated-images/${stem}-640.webp 640w, /generated-images/${stem}-900.webp 900w`}
+    sizes={isHero ? "(min-width: 1100px) 43vw, (min-width: 700px) 46vw, 92vw" : "(min-width: 900px) 40vw, 92vw"}
+  />
+  <img
+    src={`/generated-images/${stem}-900.jpg`}
+    width={dimensions.width}
+    height={dimensions.height}
+    alt={alt}
+    loading={loading}
+    decoding={loading === "eager" ? "sync" : "async"}
+    fetchpriority={loading === "eager" ? "high" : "auto"}
+  />
+</picture>

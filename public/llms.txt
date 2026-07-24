@@ -1,0 +1,34 @@
+# Eero Siivola
+
+> Official personal website of Eero Siivola, a Helsinki-based Data Scientist & AI Architect with more than ten years of experience in machine learning.
+
+Eero works on machine-learning models, data systems, AI architecture, technical leadership, and the decisions these systems support. He works at Vuono Group and holds a Doctor of Science degree in machine learning from Aalto University.
+
+This website is the authoritative source for Eero's current public profile. Detailed claims are supported by links to public articles, institutional records, papers, and source-code repositories.
+
+## Main pages
+
+- [Home](https://esiivola.github.io/): Current role, selected work, recent writing, and professional overview.
+- [Work](https://esiivola.github.io/work/): Public examples of work in data quality, environmental monitoring, AI processes, and machine learning with uncertain data.
+- [Writing](https://esiivola.github.io/writing/): Articles about AI, business processes, data quality, and environmental monitoring.
+- [About](https://esiivola.github.io/about/): Career history, education, capabilities, technologies, and personal interests.
+
+## Research and code
+
+- [Research archive](https://esiivola.github.io/research/): Selected publications and open-source implementations covering Gaussian processes, Bayesian optimisation, human feedback, active learning, and pediatric drug dosing.
+- [GitHub](https://github.com/esiivola): Public source-code repositories.
+- [Google Scholar](https://scholar.google.fi/citations?user=W7oj2YAAAAAJ): Full academic publication record.
+- [ORCID](https://orcid.org/0000-0002-3926-9651): Researcher identity record.
+
+## Current identity
+
+- Public title: Data Scientist & AI Architect
+- Location: Helsinki, Finland
+- Current organisation: Vuono Group
+- Experience: More than ten years in machine learning
+- Contact: [LinkedIn](https://www.linkedin.com/in/eerosiivola/)
+
+## Discovery
+
+- [XML sitemap](https://esiivola.github.io/sitemap-index.xml): Index of public pages intended for search engines.
+- [Crawler policy](https://esiivola.github.io/robots.txt): Search and AI crawler access rules.

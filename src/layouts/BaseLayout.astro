@@ -1,0 +1,187 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+import { profile } from "../data/profile";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = `${profile.name} | ${profile.title}`,
+  description = "Eero Siivola is a data scientist and AI architect in Helsinki. He works on machine learning, data systems, and the decisions they support.",
+  image = "/og.png",
+  noindex = false
+} = Astro.props;
+const canonical = new URL(noindex ? "/404.html" : Astro.url.pathname, Astro.site);
+const socialImage = new URL(image, Astro.site);
+const currentPath = Astro.url.pathname;
+const siteRoot = new URL("/", Astro.site);
+const aboutUrl = new URL("/about/", Astro.site);
+const profileImage = new URL("/generated-images/eero-siivola-1055-hero-900.jpg", Astro.site);
+const personId = `${siteRoot.href}#person`;
+const websiteId = `${siteRoot.href}#website`;
+const pageId = `${canonical.href}#webpage`;
+const pageName = title.split(" | ")[0];
+const isProfilePage = currentPath === "/about/";
+const isCollectionPage = ["/work/", "/writing/", "/research/"].includes(currentPath);
+const pageType = isProfilePage ? "ProfilePage" : isCollectionPage ? "CollectionPage" : "WebPage";
+const robots = noindex
+  ? "noindex, nofollow"
+  : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
+
+const personSchema = {
+  "@type": "Person",
+  "@id": personId,
+  name: profile.name,
+  description:
+    "Eero Siivola is a Helsinki-based data scientist and AI architect with more than ten years of experience in machine learning.",
+  jobTitle: profile.title,
+  url: siteRoot.href,
+  image: profileImage.href,
+  homeLocation: {
+    "@type": "Place",
+    name: profile.location
+  },
+  worksFor: {
+    "@type": "Organization",
+    name: profile.currentOrganisation
+  },
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: "Aalto University"
+  },
+  hasCredential: {
+    "@type": "EducationalOccupationalCredential",
+    credentialCategory: "degree",
+    name: "Doctor of Science in machine learning",
+    recognizedBy: {
+      "@type": "CollegeOrUniversity",
+      name: "Aalto University"
+    }
+  },
+  knowsAbout: [
+    "Machine learning",
+    "Artificial intelligence",
+    "Data architecture",
+    "Data quality",
+    "Probabilistic modelling",
+    "Bayesian optimisation",
+    "Environmental monitoring",
+    "Technical leadership"
+  ],
+  sameAs: Object.values(profile.social)
+};
+
+const websiteSchema = {
+  "@type": "WebSite",
+  "@id": websiteId,
+  url: siteRoot.href,
+  name: profile.name,
+  alternateName: `${profile.name}, ${profile.title}`,
+  description:
+    "The official website of Eero Siivola, a data scientist and AI architect in Helsinki.",
+  inLanguage: "en",
+  publisher: { "@id": personId }
+};
+
+const pageSchema = {
+  "@type": pageType,
+  "@id": pageId,
+  url: canonical.href,
+  name: pageName,
+  description,
+  inLanguage: "en",
+  isPartOf: { "@id": websiteId },
+  author: { "@id": personId },
+  image: socialImage.href,
+  ...(isProfilePage ? { mainEntity: { "@id": personId } } : {})
+};
+
+const breadcrumbSchema =
+  currentPath === "/" || noindex
+    ? null
+    : {
+        "@type": "BreadcrumbList",
+        "@id": `${canonical.href}#breadcrumb`,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: siteRoot.href
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: pageName,
+            item: canonical.href
+          }
+        ]
+      };
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [websiteSchema, personSchema, pageSchema, breadcrumbSchema].filter(Boolean)
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0B1721" />
+    <meta name="color-scheme" content="light" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={profile.name} />
+    <meta name="robots" content={robots} />
+    <meta name="googlebot" content={robots} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={canonical} />
+    <link rel="alternate" hreflang="x-default" href={canonical} />
+    <link rel="author" href={aboutUrl} />
+    {Object.values(profile.social).map((href) => <link rel="me" href={href} />)}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta property="og:type" content={isProfilePage ? "profile" : "website"} />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:site_name" content={profile.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${profile.name}, ${profile.title}`} />
+    {isProfilePage && <meta property="profile:first_name" content="Eero" />}
+    {isProfilePage && <meta property="profile:last_name" content="Siivola" />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <meta name="twitter:image:alt" content={`${profile.name}, ${profile.title}`} />
+    <script is:inline>
+      document.documentElement.classList.add("has-js");
+    </script>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <Header currentPath={currentPath} />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      import { initializeSite } from "../scripts/interactions";
+      initializeSite();
+    </script>
+  </body>
+</html>

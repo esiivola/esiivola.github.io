@@ -1,0 +1,18 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Page not found | Eero Siivola"
+  description="The requested page could not be found."
+  noindex={true}
+>
+  <section class="not-found section-dark">
+    <div class="shell not-found-inner">
+      <p class="kicker">404</p>
+      <h1>Page not found.</h1>
+      <p>The page may have moved, or the address may be wrong.</p>
+      <a class="button button-accent" href="/">Return home</a>
+    </div>
+  </section>
+</BaseLayout>

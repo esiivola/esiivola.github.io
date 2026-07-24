@@ -1,0 +1,14 @@
+---
+import { externalCase } from "../data/work";
+---
+
+<aside class="external-reference" aria-labelledby="external-reference-title">
+  <p class="article-meta">{externalCase.label}</p>
+  <div class="external-reference-body">
+    <h3 id="external-reference-title">{externalCase.title}</h3>
+    <p>{externalCase.summary}</p>
+    <a class="text-link" href={externalCase.href}>
+      Read the public case study
+    </a>
+  </div>
+</aside>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Eero Siivola">
+  <rect width="64" height="64" rx="14" fill="#0B1721"/>
+  <path d="M8 38c8-16 18-23 30-19 8 2 13 0 18-7M8 47c10-14 22-18 34-13 5 2 10 1 14-2M8 28c7-9 16-13 25-10" fill="none" stroke="#78C8BD" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="42" cy="34" r="5" fill="#F46A3B"/>
+</svg>

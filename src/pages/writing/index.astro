@@ -1,0 +1,102 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { profile } from "../../data/profile";
+import { researchItems } from "../../data/research";
+import { writingItems } from "../../data/writing";
+
+const [processArticle, dataArticle, appliedGuide] = writingItems;
+const taxaResearch = researchItems.find((item) => item.context === "Recent research");
+const amazonResearch = researchItems.find((item) => item.context === "Amazon collaboration");
+const novartisResearch = researchItems.find((item) => item.context === "Novartis collaboration");
+---
+
+<BaseLayout
+  title="Writing and research | Eero Siivola"
+  description="Selected writing, applied publications, and research by Eero Siivola."
+>
+  <header class="evidence-hero">
+    <div class="shell evidence-hero-grid">
+      <div>
+        <p class="eyebrow">Writing</p>
+        <h1>Writing and selected research.</h1>
+      </div>
+      <p>
+        A short selection covering business processes, data quality, applied machine learning, and the
+        technical foundation behind my current work.
+      </p>
+    </div>
+  </header>
+
+  <section class="section evidence-page">
+    <div class="shell evidence-groups">
+      <section class="evidence-group" aria-labelledby="industry-writing">
+        <h2 id="industry-writing">Industry writing</h2>
+        <div>
+          {
+            [processArticle, dataArticle].map((item) => (
+              <article class="evidence-row">
+                <p class="article-meta">{item.format} · {item.source} · {item.date}</p>
+                <h3><a href={item.href}>{item.title}</a></h3>
+                <p>{item.abstract}</p>
+                <a class="text-link" href={item.href}>Read at {item.source}</a>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="evidence-group" aria-labelledby="applied-work">
+        <h2 id="applied-work">Applied work</h2>
+        <div>
+          <article class="evidence-row">
+            <p class="article-meta">Applied guide · {appliedGuide.source} · {appliedGuide.date}</p>
+            <h3><a href={appliedGuide.href}>{appliedGuide.title}</a></h3>
+            <p>{appliedGuide.abstract}</p>
+            <a class="text-link" href={appliedGuide.href}>Read the public guide</a>
+          </article>
+          {
+            taxaResearch && (
+              <article class="evidence-row">
+                <p class="article-meta">{taxaResearch.context} · {taxaResearch.year}</p>
+                <h3><a href={taxaResearch.links[0].href}>{taxaResearch.title}</a></h3>
+                <p>{taxaResearch.summary}</p>
+                <a class="text-link" href={taxaResearch.links[0].href}>Read the paper</a>
+              </article>
+            )
+          }
+        </div>
+      </section>
+
+      <section class="evidence-group" aria-labelledby="earlier-collaborations">
+        <h2 id="earlier-collaborations">Earlier collaborations</h2>
+        <div>
+          {
+            [amazonResearch, novartisResearch].filter(Boolean).map((item) => (
+              <article class="evidence-row">
+                <p class="article-meta">{item!.context} · {item!.year}</p>
+                <h3><a href={item!.links[0].href}>{item!.title}</a></h3>
+                <p>{item!.summary}</p>
+                <div class="evidence-links">
+                  {item!.links.map((link) => <a class="text-link" href={link.href}>{link.label}</a>)}
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section class="evidence-archive">
+    <div class="shell evidence-archive-grid">
+      <p>
+        The full archive includes the doctoral dissertation, earlier papers, and open-source
+        implementations.
+      </p>
+      <div>
+        <a class="text-link" href="/research/">Browse the research archive</a>
+        <a class="text-link" href={profile.social.scholar}>View Google Scholar</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

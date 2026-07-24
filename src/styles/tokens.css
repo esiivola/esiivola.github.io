@@ -1,0 +1,38 @@
+:root {
+  --ink: #0b1721;
+  --water: #122734;
+  --paper: #f4f1e8;
+  --paper-deep: #e8e4da;
+  --white: #fffdf7;
+  --teal: #0a6f6a;
+  --teal-light: #78c8bd;
+  --orange: #f46a3b;
+  --mist: #cad2cc;
+  --muted: #59636a;
+  --font-sans: "Aptos", "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --text-meta: 0.8125rem;
+  --text-small: 0.9375rem;
+  --text-body: clamp(1rem, 0.12vw + 0.975rem, 1.0625rem);
+  --text-lead: clamp(1.125rem, 0.28vw + 1.05rem, 1.25rem);
+  --text-h3: clamp(1.5rem, 0.8vw + 1.25rem, 2rem);
+  --text-h2: clamp(2.25rem, 1.7vw + 1.75rem, 3.5rem);
+  --text-page-title: clamp(3rem, 2.25vw + 2rem, 4.75rem);
+  --text-display: clamp(3.75rem, 4.5vw + 2rem, 6.25rem);
+  --text-quote: clamp(1.75rem, 1.5vw + 1.25rem, 2.5rem);
+  --shell: min(1120px, calc(100vw - 64px));
+  --reading: 62ch;
+  --grid-gap: clamp(2.5rem, 5vw, 5rem);
+  --section-space: clamp(4.5rem, 7vw, 6.5rem);
+  --radius: 12px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --shadow-soft: 0 24px 70px rgb(11 23 33 / 0.12);
+}
+
+@media (max-width: 699px) {
+  :root {
+    --shell: min(100% - 40px, 1120px);
+    --section-space: 4.5rem;
+  }
+}

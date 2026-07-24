@@ -1,0 +1,29 @@
+---
+import { profile } from "../data/profile";
+---
+
+<footer class="site-footer">
+  <div class="shell footer-grid">
+    <nav aria-label="Professional profiles">
+      <p class="footer-label">Elsewhere</p>
+      <ul>
+        <li><a href={profile.social.linkedin}>LinkedIn</a></li>
+        <li><a href={profile.social.github}>GitHub</a></li>
+        <li><a href={profile.social.scholar}>Google Scholar</a></li>
+        <li><a href={profile.social.orcid}>ORCID</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Secondary navigation">
+      <p class="footer-label">Explore</p>
+      <ul>
+        <li><a href="/work/">Work</a></li>
+        <li><a href="/writing/">Writing</a></li>
+        <li><a href="/research/">Research archive</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </nav>
+    <div class="footer-meta">
+      <p>Copyright {new Date().getFullYear()} Eero Siivola</p>
+    </div>
+  </div>
+</footer>

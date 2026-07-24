@@ -1,0 +1,30 @@
+{
+  "name": "eero-siivola-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
+    "build": "npm run images && ASTRO_TELEMETRY_DISABLED=1 astro check && ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "images": "node scripts/generate-images.mjs",
+    "check:a11y": "node scripts/check-a11y.mjs",
+    "check:language": "node scripts/check-language.mjs",
+    "check:links": "node scripts/check-links.mjs",
+    "check:privacy": "node scripts/check-privacy.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^7.1.3",
+    "sharp": "^0.35.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "axe-core": "^4.12.1",
+    "jsdom": "^29.1.1",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.10"
+  }
+}

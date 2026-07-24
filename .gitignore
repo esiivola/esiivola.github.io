@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+coverage/
+
+# Local planning and source-photo archive
+EERO_SIIVOLA_SITE_PLAN.md
+IMPLEMENTING_LLM_INSTRUCTIONS.md
+Eero-Siivola-1012.jpg
+Eero-Siivola-1030.jpg
+Eero-Siivola-1055.jpg
+Eero-Siivola-1055.tif
+eero-03396.jpg
