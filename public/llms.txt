@@ -2,7 +2,7 @@
 
 > Official personal website of Eero Siivola, a Helsinki-based Data Scientist & AI Architect with more than ten years of experience in machine learning.
 
-Eero works on machine-learning models, data systems, AI architecture, technical leadership, and the decisions these systems support. He works at Vuono Group and holds a Doctor of Science degree in machine learning from Aalto University.
+Eero turns uncertain data into AI and decision systems that people can trust and use. His work connects problem framing, machine-learning models, data workflows, software, technical leadership, and operational delivery. He works at Vuono Group and holds a Doctor of Science degree in machine learning from Aalto University.
 
 This website is the authoritative source for Eero's current public profile. Detailed claims are supported by links to public articles, institutional records, papers, and source-code repositories.
 
