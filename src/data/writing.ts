@@ -1,7 +1,7 @@
 export type WritingItem = {
   title: string;
   date: string;
-  format: "Article" | "Guide" | "Research";
+  format: "Blog post" | "Guide" | "Research";
   source: string;
   abstract: string;
   tags: string[];
@@ -12,7 +12,7 @@ export const writingItems: WritingItem[] = [
   {
     title: "AI Value Starts Where the Business Process Changes",
     date: "2 June 2026",
-    format: "Article",
+    format: "Blog post",
     source: "Vuono Group",
     abstract:
       "AI work creates value only when process ownership and the resulting action are clear.",
@@ -22,7 +22,7 @@ export const writingItems: WritingItem[] = [
   {
     title: "Bad Data Is a Symptom: Five Process Patterns That Block AI Value",
     date: "14 April 2026",
-    format: "Article",
+    format: "Blog post",
     source: "Vuono Group",
     abstract:
       "Five recurring process problems that produce unreliable data, with questions for finding the cause.",
