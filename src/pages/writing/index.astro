@@ -18,11 +18,11 @@ const novartisResearch = researchItems.find((item) => item.context === "Novartis
     <div class="shell evidence-hero-grid">
       <div>
         <p class="eyebrow">Writing</p>
-        <h1>Writing and selected research.</h1>
+        <h1>Writing and research on data, AI, and decisions.</h1>
       </div>
       <p>
-        A short selection covering business processes, data quality, applied machine learning, and the
-        technical foundation behind my current work.
+        Industry perspectives on process ownership and data quality, alongside applied research
+        that shows the technical foundation behind my work.
       </p>
     </div>
   </header>
@@ -30,7 +30,7 @@ const novartisResearch = researchItems.find((item) => item.context === "Novartis
   <section class="section evidence-page">
     <div class="shell evidence-groups">
       <section class="evidence-group" aria-labelledby="industry-writing">
-        <h2 id="industry-writing">Industry writing</h2>
+        <h2 id="industry-writing">Industry perspectives</h2>
         <div>
           {
             [processArticle, dataArticle].map((item) => (
@@ -46,7 +46,7 @@ const novartisResearch = researchItems.find((item) => item.context === "Novartis
       </section>
 
       <section class="evidence-group" aria-labelledby="applied-work">
-        <h2 id="applied-work">Applied work</h2>
+        <h2 id="applied-work">Applied evidence</h2>
         <div>
           <article class="evidence-row">
             <p class="article-meta">Applied guide · {appliedGuide.source} · {appliedGuide.date}</p>
@@ -68,7 +68,7 @@ const novartisResearch = researchItems.find((item) => item.context === "Novartis
       </section>
 
       <section class="evidence-group" aria-labelledby="earlier-collaborations">
-        <h2 id="earlier-collaborations">Earlier collaborations</h2>
+        <h2 id="earlier-collaborations">Research collaborations</h2>
         <div>
           {
             [...amazonResearch, novartisResearch].filter(Boolean).map((item) => (
