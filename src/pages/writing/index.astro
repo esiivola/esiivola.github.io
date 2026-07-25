@@ -6,7 +6,7 @@ import { writingItems } from "../../data/writing";
 
 const [processArticle, dataArticle, appliedGuide] = writingItems;
 const taxaResearch = researchItems.find((item) => item.context === "Recent research");
-const amazonResearch = researchItems.find((item) => item.context === "Amazon collaboration");
+const amazonResearch = researchItems.filter((item) => item.context === "Amazon collaboration");
 const novartisResearch = researchItems.find((item) => item.context === "Novartis collaboration");
 ---
 
@@ -71,7 +71,7 @@ const novartisResearch = researchItems.find((item) => item.context === "Novartis
         <h2 id="earlier-collaborations">Earlier collaborations</h2>
         <div>
           {
-            [amazonResearch, novartisResearch].filter(Boolean).map((item) => (
+            [...amazonResearch, novartisResearch].filter(Boolean).map((item) => (
               <article class="evidence-row">
                 <p class="article-meta">{item!.context} · {item!.year}</p>
                 <h3><a href={item!.links[0].href}>{item!.title}</a></h3>

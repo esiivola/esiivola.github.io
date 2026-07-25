@@ -53,6 +53,22 @@ export const researchItems: ResearchItem[] = [
     ]
   },
   {
+    context: "Amazon collaboration",
+    title:
+      "Correcting Boundary Over-Exploration Deficiencies in Bayesian Optimization with Virtual Derivative Sign Observations",
+    year: "2018",
+    summary:
+      "A first-author collaboration with an Amazon researcher on making Bayesian optimisation more efficient by encoding prior knowledge about where the best solution is unlikely to be.",
+    themes: ["Bayesian optimisation", "Prior knowledge", "Efficient experimentation"],
+    links: [
+      {
+        label: "Publication record",
+        href: "https://research.aalto.fi/en/publications/correcting-boundary-over-exploration-deficiencies-in-bayesian-opt/"
+      },
+      { label: "Paper", href: "https://arxiv.org/abs/1704.00963" }
+    ]
+  },
+  {
     context: "Novartis collaboration",
     title: "Qualifying Drug Dosing Regimens in Pediatrics Using Gaussian Processes",
     year: "2021",
