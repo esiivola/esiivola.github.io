@@ -14,7 +14,7 @@ interface Props {
 const {
   title = `${profile.name} | ${profile.title}`,
   description = "Eero Siivola is a data scientist and AI architect who takes difficult data and AI problems from framing to working systems.",
-  image = "/og.png",
+  image = "/og-industry.png",
   noindex = false
 } = Astro.props;
 const canonical = new URL(noindex ? "/404.html" : Astro.url.pathname, Astro.site);
@@ -159,14 +159,20 @@ const structuredData = {
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={`${profile.name}, ${profile.title}`} />
+    <meta
+      property="og:image:alt"
+      content={`${profile.name} — Uncertain data. Dependable systems. Better decisions.`}
+    />
     {isProfilePage && <meta property="profile:first_name" content="Eero" />}
     {isProfilePage && <meta property="profile:last_name" content="Siivola" />}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImage} />
-    <meta name="twitter:image:alt" content={`${profile.name}, ${profile.title}`} />
+    <meta
+      name="twitter:image:alt"
+      content={`${profile.name} — Uncertain data. Dependable systems. Better decisions.`}
+    />
     <script is:inline>
       document.documentElement.classList.add("has-js");
     </script>

@@ -73,10 +73,10 @@ function socialOverlay() {
       <circle cx="475" cy="486" r="9" fill="#F46A3B"/>
       <circle cx="627" cy="326" r="7" fill="#78C8BD"/>
       <text x="72" y="88" fill="#78C8BD" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="2">EERO SIIVOLA · HELSINKI</text>
-      <text x="72" y="203" fill="#F4F1E8" font-family="Arial, Helvetica, sans-serif" font-size="67" font-weight="600" letter-spacing="-2">
-        <tspan x="72" dy="0">Data is often uncertain.</tspan>
-        <tspan x="72" dy="76">Decisions still have to</tspan>
-        <tspan x="72" dy="76">be made.</tspan>
+      <text x="72" y="203" fill="#F4F1E8" font-family="Arial, Helvetica, sans-serif" font-size="72" font-weight="600" letter-spacing="-2">
+        <tspan x="72" dy="0">Uncertain data.</tspan>
+        <tspan x="72" dy="80">Dependable systems.</tspan>
+        <tspan x="72" dy="80">Better decisions.</tspan>
       </text>
       <text x="72" y="560" fill="#F4F1E8" font-family="Arial, Helvetica, sans-serif" font-size="24">Data Scientist &amp; AI Architect</text>
     </svg>
@@ -103,7 +103,7 @@ async function createSocialCard() {
       { input: socialOverlay(), left: 0, top: 0 }
     ])
     .png({ compressionLevel: 9 })
-    .toFile(path.join(root, "public", "og.png"));
+    .toFile(path.join(root, "public", "og-industry.png"));
 }
 
 async function verifyGeneratedImage(file, expected) {
@@ -128,7 +128,7 @@ async function verifyGeneratedImages() {
     ["public/generated-images/eero-siivola-1055-hero-900.avif", 900, 1200, "heif", 400_000],
     ["public/generated-images/eero-siivola-1055-hero-900.webp", 900, 1200, "webp", 450_000],
     ["public/generated-images/eero-siivola-1055-hero-900.jpg", 900, 1200, "jpeg", 500_000],
-    ["public/og.png", 1200, 630, "png", 1_000_000]
+    ["public/og-industry.png", 1200, 630, "png", 1_000_000]
   ];
 
   await Promise.all(
