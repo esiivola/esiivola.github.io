@@ -268,7 +268,7 @@ em {
 
 .wordmark span {
   font-family: var(--font-display);
-  font-size: 1.45rem;
+  font-size: 1.5rem;
   font-weight: 400;
   letter-spacing: -0.025em;
   line-height: 1;
@@ -3494,6 +3494,14 @@ em {
   padding-block: var(--section-space);
 }
 
+h2 {
+  font-size: var(--text-h2);
+}
+
+h3 {
+  font-size: var(--text-h3);
+}
+
 .identity-grid,
 .selected-case-grid,
 .home-evidence-heading,
@@ -3541,10 +3549,13 @@ em {
 .work-story-hero h1,
 .about-hero h1,
 .evidence-hero h1,
-.page-hero h1 {
+.page-hero h1,
+.not-found h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
   font-size: var(--text-page-title);
-  letter-spacing: -0.05em;
-  line-height: 0.98;
+  letter-spacing: -0.025em;
+  line-height: 0.96;
 }
 
 .identity-lead {
@@ -3555,6 +3566,7 @@ em {
 
 .work-story-intro,
 .work-story-lead,
+.work-story-contact p,
 .evidence-hero-grid > p {
   font-size: var(--text-lead);
   line-height: 1.55;
@@ -3665,7 +3677,7 @@ em {
   }
 
   .identity-copy h1 {
-    font-size: clamp(3.5rem, 17vw, 5rem);
+    font-size: var(--text-display);
   }
 
   .work-story-hero h1,
