@@ -1,0 +1,110 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { profile } from "../../data/profile";
+---
+
+<BaseLayout
+  title="Privacy and analytics | Eero Siivola"
+  description="How analytics consent and privacy choices are handled on Eero Siivola's website."
+>
+  <header class="evidence-hero">
+    <div class="shell evidence-hero-grid">
+      <div>
+        <p class="eyebrow">Privacy</p>
+        <h1>Privacy and analytics.</h1>
+      </div>
+      <p>
+        This page describes the limited information this professional website stores and how
+        optional analytics consent works.
+      </p>
+    </div>
+  </header>
+
+  <section class="section narrative-section">
+    <div class="shell prose privacy-copy">
+      <h2>Current data collection</h2>
+      <p>
+        This site has no accounts, contact forms, advertising, or personalised marketing. Google
+        Analytics is configured with measurement ID <code>G-RK8VRLQ1ND</code>, but its tag does not
+        load until you explicitly allow analytics.
+      </p>
+
+      <h2>Optional analytics</h2>
+      <p>
+        Google Analytics is used to understand aggregate site traffic and which pages are useful.
+        Its default measurement can include session statistics, approximate location, and browser
+        and device information. The Google tag is blocked unless you select
+        <strong>Allow analytics</strong>. Selecting <strong>Decline analytics</strong> prevents it
+        from loading and sends no consent or measurement request to Google.
+      </p>
+      <p>
+        Advertising storage, advertising user data, and advertising personalisation remain denied
+        in both cases. Google describes its handling of information in the{" "}
+        <a href="https://policies.google.com/privacy">Google Privacy Policy</a>.
+      </p>
+
+      <h2>Your saved choice</h2>
+      <p>
+        The site stores your analytics choice in your browser's local storage under
+        <code>eero-analytics-consent-v1</code>. This strictly necessary value records only
+        <code>granted</code> or <code>denied</code>. It is not sent to Eero or to Google.
+      </p>
+      <button class="privacy-settings-button" type="button" data-open-analytics-settings hidden>
+        Change analytics settings
+      </button>
+
+      <h2>External links</h2>
+      <p>
+        Links to LinkedIn, GitHub, Google Scholar, ORCID, Vuono Group, and publication services
+        take you to those organisations' websites. Their own privacy practices apply after you
+        follow a link.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about this site's privacy implementation can be sent through{" "}
+        <a href={profile.social.linkedin}>LinkedIn</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .privacy-copy h2 {
+    margin-top: 3rem;
+    font-size: clamp(1.75rem, 2.5vw, 2.5rem);
+  }
+
+  .privacy-copy h2:first-child {
+    margin-top: 0;
+  }
+
+  .privacy-copy code {
+    padding: 0.12rem 0.3rem;
+    border-radius: 4px;
+    color: var(--ink);
+    background: var(--paper-deep);
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+  }
+
+  .privacy-settings-button {
+    min-height: 46px;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--ink);
+    border-radius: 8px;
+    color: var(--ink);
+    background: transparent;
+    font-weight: 750;
+    cursor: pointer;
+  }
+
+  .privacy-settings-button:hover {
+    color: var(--paper);
+    background: var(--ink);
+  }
+
+  .privacy-settings-button[hidden] {
+    display: none;
+  }
+</style>

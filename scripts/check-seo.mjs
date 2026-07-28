@@ -9,7 +9,7 @@ const failures = [];
 const titles = new Map();
 const descriptions = new Map();
 
-const requiredRoutes = ["/", "/about/", "/research/", "/work/", "/writing/"];
+const requiredRoutes = ["/", "/about/", "/privacy/", "/research/", "/work/", "/writing/"];
 const requiredGraphTypes = ["WebSite", "Person"];
 
 async function walk(directory) {
@@ -73,6 +73,28 @@ for (const file of htmlFiles) {
     if (!content(document, selector)) fail(file, `missing ${selector}`);
   }
 
+  for (const selector of [
+    'link[rel="preload"][as="font"][href="/fonts/GFSDidot.otf"]',
+    'link[rel="icon"][sizes="any"]',
+    'link[rel="icon"][sizes="32x32"]',
+    'link[rel="icon"][sizes="16x16"]',
+    'link[rel="shortcut icon"]',
+    'link[rel="apple-touch-icon"][sizes="180x180"]',
+    'link[rel="mask-icon"]',
+    'link[rel="manifest"]'
+  ]) {
+    if (!document.querySelector(selector)) fail(file, `missing ${selector}`);
+  }
+
+  if (content(document, 'meta[name="theme-color"]') !== "#F4F1E8") {
+    fail(file, "theme color does not match the site background");
+  }
+
+  const analyticsConsent = document.querySelector("[data-analytics-consent]");
+  if (analyticsConsent?.getAttribute("data-analytics-id") !== "G-RK8VRLQ1ND") {
+    fail(file, "analytics measurement ID is missing from the consent-controlled loader");
+  }
+
   const schemaScripts = Array.from(document.querySelectorAll('script[type="application/ld+json"]'));
   if (schemaScripts.length !== 1) {
     fail(file, `expected one JSON-LD graph, found ${schemaScripts.length}`);
@@ -128,6 +150,34 @@ if (!llms.startsWith("# Eero Siivola")) failures.push("llms.txt: missing require
 for (const route of requiredRoutes) {
   const absolute = new URL(route, siteUrl).href;
   if (!llms.includes(absolute)) failures.push(`llms.txt: missing ${absolute}`);
+}
+
+const manifest = JSON.parse(await readFile(path.join(root, "site.webmanifest"), "utf8"));
+if (manifest.theme_color !== "#F4F1E8" || manifest.background_color !== "#F4F1E8") {
+  failures.push("site.webmanifest: theme and background colors must match the site");
+}
+for (const icon of manifest.icons ?? []) {
+  if (!icon.src?.startsWith("/")) {
+    failures.push(`site.webmanifest: invalid icon source ${icon.src ?? "(missing)"}`);
+    continue;
+  }
+  try {
+    await stat(path.join(root, icon.src.slice(1)));
+  } catch {
+    failures.push(`site.webmanifest: missing icon file ${icon.src}`);
+  }
+}
+
+for (const asset of [
+  "brand/es_gfs_didot_b_cleaned.svg",
+  "fonts/GFSDidot.otf",
+  "fonts/OFL.txt"
+]) {
+  try {
+    await stat(path.join(root, asset));
+  } catch {
+    failures.push(`brand assets: missing ${asset}`);
+  }
 }
 
 if (failures.length) {

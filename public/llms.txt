@@ -2,7 +2,7 @@
 
 > Official personal website of Eero Siivola, a Helsinki-based Data Scientist & AI Architect with more than ten years of experience in machine learning.
 
-Eero turns uncertain data into AI and decision systems that people can trust and use. His work connects problem framing, machine-learning models, data workflows, software, technical leadership, and operational delivery. He works at Vuono Group and holds a Doctor of Science degree in machine learning from Aalto University.
+Eero turns uncertain data and difficult AI problems into dependable systems that improve decisions and work in practice. His work connects problem framing, data foundations, machine-learning models, software, technical leadership, and operational adoption. He works at Vuono Group and holds a Doctor of Science degree in machine learning from Aalto University.
 
 This website is the authoritative source for Eero's current public profile. Detailed claims are supported by links to public articles, institutional records, papers, and source-code repositories.
 
@@ -11,7 +11,8 @@ This website is the authoritative source for Eero's current public profile. Deta
 - [Home](https://esiivola.github.io/): Current role, selected work, recent writing, and professional overview.
 - [Work](https://esiivola.github.io/work/): Public examples of work in data quality, environmental monitoring, AI processes, and machine learning with uncertain data.
 - [Writing](https://esiivola.github.io/writing/): Articles about AI, business processes, data quality, and environmental monitoring.
-- [About](https://esiivola.github.io/about/): Career history, education, capabilities, technologies, and personal interests.
+- [About](https://esiivola.github.io/about/): Career history, education, capabilities, technologies, leadership, and independent projects.
+- [Privacy](https://esiivola.github.io/privacy/): Current data collection and optional analytics consent.
 
 ## Research and code
 

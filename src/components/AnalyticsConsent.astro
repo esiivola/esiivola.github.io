@@ -1,0 +1,329 @@
+---
+const googleAnalyticsId = "G-RK8VRLQ1ND";
+---
+
+<div
+  class="analytics-consent"
+  data-analytics-consent
+  data-analytics-id={googleAnalyticsId}
+  data-consent="unset"
+>
+  <section
+    class="consent-banner"
+    data-consent-banner
+    aria-labelledby="consent-banner-title"
+    hidden
+  >
+    <div>
+      <p class="consent-kicker">Privacy</p>
+      <h2 id="consent-banner-title">Optional site analytics</h2>
+      <p>
+        I would like to use Google Analytics to understand which pages are useful. No Google
+        Analytics code loads unless you allow it.
+      </p>
+      <a href="/privacy/">How analytics and your choice are handled</a>
+    </div>
+    <div class="consent-actions" aria-label="Analytics consent choices">
+      <button class="consent-button consent-button-primary" type="button" data-consent-choice="granted">
+        Allow analytics
+      </button>
+      <button class="consent-button consent-button-quiet" type="button" data-consent-choice="denied">
+        Decline analytics
+      </button>
+    </div>
+  </section>
+
+  <button
+    class="consent-settings"
+    type="button"
+    data-open-analytics-settings
+    aria-haspopup="dialog"
+    hidden
+  >
+    Analytics settings
+  </button>
+
+  <dialog class="consent-dialog" data-consent-dialog aria-labelledby="consent-dialog-title">
+    <div class="consent-dialog-panel">
+      <div class="consent-dialog-heading">
+        <div>
+          <p class="consent-kicker">Privacy</p>
+          <h2 id="consent-dialog-title">Analytics preferences</h2>
+        </div>
+        <button class="consent-close" type="button" data-consent-close aria-label="Close analytics settings">
+          Close
+        </button>
+      </div>
+      <div class="consent-choice-row">
+        <div>
+          <h3>Optional analytics</h3>
+          <p>
+            Used to understand aggregate site traffic and useful pages. Advertising and
+            personalised marketing are not used.
+          </p>
+          <a href="/privacy/">Read the privacy information</a>
+        </div>
+        <p class="consent-status" data-consent-status aria-live="polite">Not decided</p>
+      </div>
+      <div class="consent-dialog-actions">
+        <button class="consent-button consent-button-primary" type="button" data-consent-choice="granted">
+          Allow analytics
+        </button>
+        <button class="consent-button consent-button-secondary" type="button" data-consent-choice="denied">
+          Decline analytics
+        </button>
+      </div>
+    </div>
+  </dialog>
+</div>
+
+<script>
+  import { initializeAnalyticsConsent } from "../scripts/consent";
+
+  initializeAnalyticsConsent();
+</script>
+
+<style>
+  .consent-banner[hidden],
+  .consent-settings[hidden] {
+    display: none;
+  }
+
+  .consent-banner {
+    position: fixed;
+    z-index: 120;
+    right: 50%;
+    bottom: 1.5rem;
+    display: grid;
+    width: min(1056px, calc(100% - 3rem));
+    align-items: end;
+    gap: 2rem;
+    padding: clamp(1.4rem, 3vw, 2rem);
+    border: 1px solid var(--teal-light);
+    border-radius: var(--radius);
+    color: var(--paper);
+    background: var(--ink);
+    box-shadow: var(--shadow-soft);
+    grid-template-columns: minmax(0, 1fr) auto;
+    transform: translateX(50%);
+  }
+
+  .consent-banner h2,
+  .consent-dialog h2 {
+    margin-bottom: 0.75rem;
+    font-size: clamp(1.75rem, 2.4vw, 2.5rem);
+    letter-spacing: -0.035em;
+    line-height: 1;
+  }
+
+  .consent-banner p:not(.consent-kicker) {
+    max-width: 60ch;
+    margin-bottom: 0.4rem;
+    color: var(--mist);
+  }
+
+  .consent-kicker {
+    margin-bottom: 0.65rem;
+    color: var(--teal-light);
+    font-size: var(--text-meta);
+    font-weight: 750;
+    letter-spacing: 0.1em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .consent-banner a {
+    color: var(--teal-light);
+    font-size: var(--text-small);
+    font-weight: 700;
+  }
+
+  .consent-actions,
+  .consent-dialog-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .consent-actions {
+    justify-content: flex-end;
+  }
+
+  .consent-button,
+  .consent-settings,
+  .consent-close {
+    min-height: 46px;
+    border: 1px solid currentColor;
+    border-radius: 8px;
+    font-weight: 750;
+    line-height: 1.1;
+    cursor: pointer;
+  }
+
+  .consent-button {
+    padding: 0.8rem 1rem;
+  }
+
+  .consent-button-primary {
+    border-color: var(--orange);
+    color: var(--ink);
+    background: var(--orange);
+  }
+
+  .consent-button-primary:hover {
+    border-color: var(--paper);
+    background: var(--paper);
+  }
+
+  .consent-button-quiet {
+    color: var(--paper);
+    background: transparent;
+  }
+
+  .consent-button-quiet:hover {
+    color: var(--ink);
+    background: var(--paper);
+  }
+
+  .consent-button-secondary {
+    color: var(--ink);
+    background: transparent;
+  }
+
+  .consent-button-secondary:hover {
+    color: var(--paper);
+    background: var(--ink);
+  }
+
+  .consent-settings {
+    position: fixed;
+    z-index: 90;
+    bottom: 1rem;
+    left: 1rem;
+    padding: 0.7rem 0.9rem;
+    color: var(--ink);
+    background: var(--paper);
+    box-shadow: 0 8px 24px rgb(11 23 33 / 0.12);
+  }
+
+  .consent-settings:hover {
+    color: var(--paper);
+    background: var(--ink);
+  }
+
+  .consent-dialog {
+    width: min(650px, calc(100% - 2rem));
+    max-width: none;
+    padding: 0;
+    border: 0;
+    color: var(--ink);
+    background: transparent;
+  }
+
+  .consent-dialog::backdrop {
+    background: rgb(11 23 33 / 0.72);
+  }
+
+  .consent-dialog-panel {
+    padding: clamp(1.4rem, 4vw, 2rem);
+    border: 1px solid var(--ink);
+    border-radius: var(--radius);
+    background: var(--paper);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .consent-dialog-heading {
+    display: grid;
+    align-items: start;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .consent-dialog .consent-kicker {
+    color: var(--teal);
+  }
+
+  .consent-close {
+    min-height: 42px;
+    padding: 0.65rem 0.8rem;
+    color: var(--ink);
+    background: transparent;
+  }
+
+  .consent-close:hover {
+    color: var(--paper);
+    background: var(--ink);
+  }
+
+  .consent-choice-row {
+    display: grid;
+    align-items: start;
+    gap: 1rem;
+    padding-block: 1.4rem;
+    border-block: 1px solid var(--paper-deep);
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .consent-choice-row h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+  }
+
+  .consent-choice-row p {
+    max-width: 48ch;
+    margin-bottom: 0.5rem;
+    color: var(--muted);
+  }
+
+  .consent-choice-row a {
+    color: var(--teal);
+    font-size: var(--text-small);
+    font-weight: 700;
+  }
+
+  .consent-status {
+    padding: 0.4rem 0.65rem;
+    border: 1px solid var(--mist);
+    border-radius: 999px;
+    color: var(--ink) !important;
+    background: var(--white);
+    font-size: var(--text-meta);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .consent-dialog-actions {
+    justify-content: flex-end;
+    padding-top: 1.5rem;
+  }
+
+  @media (max-width: 699px) {
+    .consent-banner {
+      bottom: 1rem;
+      width: calc(100% - 2rem);
+      gap: 1.25rem;
+      grid-template-columns: 1fr;
+    }
+
+    .consent-actions {
+      justify-content: stretch;
+    }
+
+    .consent-actions .consent-button {
+      flex: 1 1 11rem;
+    }
+
+    .consent-choice-row {
+      grid-template-columns: 1fr;
+    }
+
+    .consent-status {
+      width: fit-content;
+    }
+
+    .consent-dialog-actions .consent-button {
+      flex: 1 1 11rem;
+    }
+  }
+</style>
