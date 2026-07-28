@@ -1,12 +1,38 @@
 import { createHash } from "node:crypto";
 import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import path from "node:path";
-import sharp from "sharp";
 
 const root = process.cwd();
 const output = path.join(root, "public", "generated-images");
 const heroSource = "Eero-Siivola-1055-small.jpg";
 const monogramSource = path.join(root, "public", "brand", "es_gfs_didot_b_cleaned.svg");
+const didotFontSource = path.join(root, "public", "fonts", "GFSDidot.otf");
+
+// Give Pango a deterministic, writable font environment before Sharp is loaded.
+// This lets the favicon generator render the complete font glyph on macOS and CI.
+const fontRuntime = path.join(tmpdir(), "esiivola-font-runtime");
+const fontCache = path.join(fontRuntime, "cache");
+const fontConfig = path.join(fontRuntime, "fonts.conf");
+await mkdir(fontCache, { recursive: true });
+await writeFile(
+  fontConfig,
+  `<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+  <dir>${path.dirname(didotFontSource)}</dir>
+  <dir>/System/Library/Fonts</dir>
+  <dir>/Library/Fonts</dir>
+  <dir>/usr/share/fonts</dir>
+  <dir>/usr/local/share/fonts</dir>
+  <cachedir>${fontCache}</cachedir>
+</fontconfig>
+`
+);
+process.env.FONTCONFIG_FILE = fontConfig;
+process.env.XDG_CACHE_HOME = fontCache;
+
+const { default: sharp } = await import("sharp");
 
 const originals = {
   "Eero-Siivola-1055-small.jpg": "1e86864c2410db28d53c7b8d84ffae8aa48694bd62b087001c6a39afdb2daa4d",
@@ -52,26 +78,59 @@ async function createPortraitSet({ source, stem, position = "centre" }) {
   }
 }
 
-function brandMarkSvg({ maskable = false, monochrome = false } = {}) {
-  const background = monochrome
-    ? ""
-    : `<rect width="512" height="512" rx="${maskable ? 0 : 104}" fill="#0B1721"/>`;
-  const signal = monochrome ? "#000000" : "#78C8BD";
-  const decision = monochrome ? "#000000" : "#F46A3B";
-  const transform = maskable ? 'transform="translate(82 82) scale(.68)"' : "";
-
+function microMarkSvg(iconPng) {
   return `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-      ${background}
-      <g ${transform}>
-        <path d="M76 352C149 267 211 295 263 258C313 223 332 160 406 112"
-          fill="none" stroke="${signal}" stroke-width="34" stroke-linecap="round"/>
-        <path d="M78 414C163 336 235 367 296 324C337 295 355 266 378 226"
-          fill="none" stroke="${signal}" stroke-width="24" stroke-linecap="round" opacity="${monochrome ? 1 : .62}"/>
-        <circle cx="406" cy="112" r="34" fill="${decision}"/>
-      </g>
+      <title>GFS Didot E</title>
+      <image width="512" height="512"
+        href="data:image/png;base64,${iconPng.toString("base64")}"/>
     </svg>
   `;
+}
+
+async function createMicroMark() {
+  const canvasSize = 1024;
+  const glyph = await sharp({
+    text: {
+      text: '<span foreground="#F4F1E8">E</span>',
+      font: "GFS Didot 900",
+      fontfile: didotFontSource,
+      rgba: true,
+      dpi: 72
+    }
+  })
+    .resize({ height: 744 })
+    .png()
+    .toBuffer();
+  const { width, height } = await sharp(glyph).metadata();
+  if (!width || !height) throw new Error("Could not render the GFS Didot E glyph");
+
+  const left = Math.round((canvasSize - width) / 2);
+  const top = Math.round((canvasSize - height) / 2);
+  const background = Buffer.from(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="${canvasSize}" height="${canvasSize}">
+      <rect width="${canvasSize}" height="${canvasSize}" rx="208" fill="#0B1721"/>
+    </svg>
+  `);
+
+  // A small optical-weight correction keeps Didot's fine details visible at 16px.
+  const offsets = [
+    [-4, 0],
+    [4, 0],
+    [0, -4],
+    [0, 4],
+    [0, 0]
+  ];
+  return sharp(background)
+    .composite(
+      offsets.map(([x, y]) => ({
+        input: glyph,
+        left: left + x,
+        top: top + y
+      }))
+    )
+    .png({ compressionLevel: 9 })
+    .toBuffer();
 }
 
 function monogramTileSvg(monogramPath, { maskable = false } = {}) {
@@ -168,11 +227,11 @@ function createIco(images) {
 
 async function createBrandAssets() {
   const publicRoot = path.join(root, "public");
-  const standardSvgSource = brandMarkSvg().trim();
-  const standardSvg = Buffer.from(standardSvgSource);
   const monogramSvg = await readFile(monogramSource, "utf8");
   const monogramPath = monogramSvg.match(/<path[\s\S]*?\/>/)?.[0];
   if (!monogramPath) throw new Error("Monogram SVG does not contain a path");
+  const standardPng = await createMicroMark();
+  const standardSvgSource = microMarkSvg(standardPng).trim();
   const monogramTile = Buffer.from(monogramTileSvg(monogramPath));
   const monogramMaskable = Buffer.from(monogramTileSvg(monogramPath, { maskable: true }));
 
@@ -185,8 +244,8 @@ async function createBrandAssets() {
   ]);
 
   const rasterSpecs = [
-    ["favicon-16x16.png", 16, standardSvg],
-    ["favicon-32x32.png", 32, standardSvg],
+    ["favicon-16x16.png", 16, standardPng],
+    ["favicon-32x32.png", 32, standardPng],
     ["apple-touch-icon.png", 180, monogramTile],
     ["icon-192.png", 192, monogramTile],
     ["icon-512.png", 512, monogramTile],
@@ -205,7 +264,7 @@ async function createBrandAssets() {
   const icoImages = await Promise.all(
     [16, 32, 48].map(async (width) => ({
       width,
-      buffer: await sharp(standardSvg).resize(width, width).png().toBuffer()
+      buffer: await sharp(standardPng).resize(width, width).png().toBuffer()
     }))
   );
   await writeFile(path.join(publicRoot, "favicon.ico"), createIco(icoImages));
@@ -251,6 +310,14 @@ async function verifyGeneratedImages() {
   const ico = await readFile(path.join(root, "public", "favicon.ico"));
   if (ico.readUInt16LE(2) !== 1 || ico.readUInt16LE(4) !== 3) {
     throw new Error("Unexpected favicon.ico directory");
+  }
+
+  const faviconSvg = await readFile(path.join(root, "public", "favicon.svg"), "utf8");
+  if (
+    !faviconSvg.includes("<title>GFS Didot E</title>") ||
+    !faviconSvg.includes("data:image/png;base64,")
+  ) {
+    throw new Error("Favicon is missing the complete GFS Didot E glyph");
   }
 }
 
