@@ -1,5 +1,13 @@
 @import "./tokens.css";
 
+@font-face {
+  font-family: "GFS Didot";
+  src: url("/fonts/GFSDidot.otf") format("opentype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 *,
 *::before,
 *::after {
@@ -247,12 +255,23 @@ em {
 
 .wordmark {
   display: inline-flex;
-  align-items: baseline;
-  gap: 0.9rem;
-  font-size: var(--text-small);
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  align-items: center;
+  gap: 0.7rem;
   text-decoration: none;
+}
+
+.wordmark-monogram {
+  width: 30px;
+  height: 34px;
+  flex: none;
+}
+
+.wordmark span {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1;
 }
 
 .wordmark small {
@@ -2958,10 +2977,13 @@ em {
 }
 
 .identity-copy h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
   max-width: 8ch;
   margin-bottom: 2.25rem;
   font-size: clamp(4.75rem, 9.5vw, 9rem);
-  line-height: 0.87;
+  letter-spacing: -0.035em;
+  line-height: 0.9;
 }
 
 .identity-lead {
@@ -3509,9 +3531,11 @@ em {
 }
 
 .identity-copy h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
   font-size: var(--text-display);
-  letter-spacing: -0.05em;
-  line-height: 0.94;
+  letter-spacing: -0.035em;
+  line-height: 0.92;
 }
 
 .work-story-hero h1,

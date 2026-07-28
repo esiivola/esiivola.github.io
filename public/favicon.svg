@@ -1,5 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Eero Siivola">
-  <rect width="64" height="64" rx="14" fill="#0B1721"/>
-  <path d="M8 38c8-16 18-23 30-19 8 2 13 0 18-7M8 47c10-14 22-18 34-13 5 2 10 1 14-2M8 28c7-9 16-13 25-10" fill="none" stroke="#78C8BD" stroke-width="2.5" stroke-linecap="round"/>
-  <circle cx="42" cy="34" r="5" fill="#F46A3B"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+      <rect width="512" height="512" rx="104" fill="#0B1721"/>
+      <g >
+        <path d="M76 352C149 267 211 295 263 258C313 223 332 160 406 112"
+          fill="none" stroke="#78C8BD" stroke-width="34" stroke-linecap="round"/>
+        <path d="M78 414C163 336 235 367 296 324C337 295 355 266 378 226"
+          fill="none" stroke="#78C8BD" stroke-width="24" stroke-linecap="round" opacity="0.62"/>
+        <circle cx="406" cy="112" r="34" fill="#F46A3B"/>
+      </g>
+    </svg>

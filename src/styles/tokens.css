@@ -10,7 +10,8 @@
   --mist: #cad2cc;
   --muted: #59636a;
   --font-sans: "Aptos", "Inter", "Helvetica Neue", Arial, sans-serif;
-  --font-serif: "Iowan Old Style", "Baskerville", "Times New Roman", serif;
+  --font-display: "GFS Didot", "Iowan Old Style", "Baskerville", "Times New Roman", serif;
+  --font-serif: var(--font-display);
   --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   --text-meta: 0.8125rem;
   --text-small: 0.9375rem;
