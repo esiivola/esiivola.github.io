@@ -7,6 +7,7 @@ const root = process.cwd();
 const output = path.join(root, "public", "generated-images");
 const heroSource = "Eero-Siivola-1055-small.jpg";
 const monogramSource = path.join(root, "public", "brand", "es_gfs_didot_b_cleaned.svg");
+const wordmarkSource = path.join(root, "public", "brand", "eero-siivola-wordmark.svg");
 const didotFontSource = path.join(root, "public", "fonts", "GFSDidot.otf");
 
 // Give Pango a deterministic, writable font environment before Sharp is loaded.
@@ -154,35 +155,26 @@ function socialOverlay() {
   return Buffer.from(`
     <svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
       <rect width="1200" height="630" fill="none"/>
-      <path d="M704 0V630M0 112H1200M0 548H1200" fill="none" stroke="#0B1721" stroke-width="1" opacity=".2"/>
-      <rect x="756" y="48" width="396" height="500" fill="none" stroke="#0B1721" stroke-width="2"/>
-      <g fill="none" stroke="#0A6F6A" stroke-width="2" stroke-linecap="round" opacity=".25">
-        <path d="M-30 455C134 382 270 391 397 457c96 50 180 50 273-4"/>
-        <path d="M-50 505C112 438 260 442 401 501c96 40 185 37 282-13"/>
-      </g>
-      <path d="M526 492C570 465 606 425 648 364" fill="none" stroke="#0A6F6A" stroke-width="6" stroke-linecap="round"/>
-      <circle cx="526" cy="492" r="10" fill="#F46A3B"/>
-      <circle cx="648" cy="364" r="8" fill="#0A6F6A"/>
-      <text x="140" y="72" fill="#0A6F6A" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="2">EERO SIIVOLA · HELSINKI</text>
-      <text x="64" y="194" fill="#0B1721" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="600" letter-spacing="-2">
-        <tspan x="72" dy="0">Uncertain data.</tspan>
-        <tspan x="72" dy="74">Dependable systems.</tspan>
-        <tspan x="72" dy="74">Better decisions.</tspan>
+      <path d="M600 0V630" fill="none" stroke="#CAD2CC" stroke-width="1"/>
+      <rect x="728" y="60" width="408" height="510" fill="none" stroke="#CAD2CC" stroke-width="2"/>
+      <text x="64" y="78" fill="#0A6F6A" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="1.6">DATA SCIENTIST &amp; AI ARCHITECT · HELSINKI</text>
+      <text x="64" y="392" fill="#0B1721" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="500" letter-spacing="-.5">
+        <tspan x="64" dy="0">I turn uncertain data and difficult AI</tspan>
+        <tspan x="64" dy="42">problems into dependable systems that</tspan>
+        <tspan x="64" dy="42">improve decisions and work in practice.</tspan>
       </text>
-      <text x="64" y="590" fill="#0B1721" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="600">Data Scientist &amp; AI Architect</text>
-      <text x="756" y="590" fill="#59636A" font-family="Arial, Helvetica, sans-serif" font-size="17" letter-spacing="1">PROBLEM FRAMING · MODELLING · DELIVERY</text>
     </svg>
   `);
 }
 
 async function createSocialCard() {
-  const [portrait, monogram] = await Promise.all([
+  const [portrait, wordmark] = await Promise.all([
     sharp(path.join(root, heroSource))
       .rotate()
-      .resize(396, 500, { fit: "cover", position: "attention" })
+      .resize(408, 510, { fit: "cover", position: "attention" })
       .jpeg({ quality: 88 })
       .toBuffer(),
-    sharp(monogramSource).resize({ height: 64 }).png().toBuffer()
+    sharp(wordmarkSource).resize({ height: 230 }).png().toBuffer()
   ]);
 
   await sharp({
@@ -194,12 +186,12 @@ async function createSocialCard() {
     }
   })
     .composite([
-      { input: portrait, left: 756, top: 48 },
-      { input: monogram, left: 64, top: 24 },
+      { input: portrait, left: 728, top: 60 },
+      { input: wordmark, left: 64, top: 105 },
       { input: socialOverlay(), left: 0, top: 0 }
     ])
     .png({ compressionLevel: 9 })
-    .toFile(path.join(root, "public", "og-share.png"));
+    .toFile(path.join(root, "public", "og-eero-siivola.png"));
 }
 
 function createIco(images) {
@@ -292,7 +284,7 @@ async function verifyGeneratedImages() {
     ["public/generated-images/eero-siivola-1055-hero-900.avif", 900, 1200, "heif", 400_000],
     ["public/generated-images/eero-siivola-1055-hero-900.webp", 900, 1200, "webp", 450_000],
     ["public/generated-images/eero-siivola-1055-hero-900.jpg", 900, 1200, "jpeg", 500_000],
-    ["public/og-share.png", 1200, 630, "png", 1_000_000],
+    ["public/og-eero-siivola.png", 1200, 630, "png", 1_000_000],
     ["public/favicon-16x16.png", 16, 16, "png", 25_000],
     ["public/favicon-32x32.png", 32, 32, "png", 25_000],
     ["public/apple-touch-icon.png", 180, 180, "png", 100_000],

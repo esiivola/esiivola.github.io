@@ -4,6 +4,9 @@ import { JSDOM } from "jsdom";
 
 const root = path.join(process.cwd(), "dist");
 const siteUrl = "https://esiivola.github.io";
+const socialImageUrl = `${siteUrl}/og-eero-siivola.png`;
+const socialImageAlt =
+  "Portrait of Eero Siivola with his name and role, Data Scientist & AI Architect.";
 const htmlFiles = [];
 const failures = [];
 const titles = new Map();
@@ -64,6 +67,8 @@ for (const file of htmlFiles) {
     'meta[property="og:description"]',
     'meta[property="og:url"]',
     'meta[property="og:image"]',
+    'meta[property="og:image:secure_url"]',
+    'meta[property="og:image:alt"]',
     'meta[name="twitter:card"]',
     'meta[name="twitter:title"]',
     'meta[name="twitter:description"]',
@@ -71,6 +76,21 @@ for (const file of htmlFiles) {
     'meta[name="twitter:image:alt"]'
   ]) {
     if (!content(document, selector)) fail(file, `missing ${selector}`);
+  }
+
+  const ogImage = content(document, 'meta[property="og:image"]');
+  const secureOgImage = content(document, 'meta[property="og:image:secure_url"]');
+  const twitterImage = content(document, 'meta[name="twitter:image"]');
+  const ogImageAlt = content(document, 'meta[property="og:image:alt"]');
+  const twitterImageAlt = content(document, 'meta[name="twitter:image:alt"]');
+  if (ogImage !== socialImageUrl || secureOgImage !== socialImageUrl) {
+    fail(file, "Open Graph image is not the current absolute social-card URL");
+  }
+  if (twitterImage !== socialImageUrl) {
+    fail(file, "Twitter image does not match the Open Graph image");
+  }
+  if (ogImageAlt !== socialImageAlt || twitterImageAlt !== socialImageAlt) {
+    fail(file, "social-card alternative text is missing or outdated");
   }
 
   for (const selector of [
@@ -169,6 +189,7 @@ for (const icon of manifest.icons ?? []) {
 }
 
 for (const asset of [
+  "brand/eero-siivola-wordmark.svg",
   "brand/es_gfs_didot_b_cleaned.svg",
   "fonts/GFSDidot.otf",
   "fonts/OFL.txt"
