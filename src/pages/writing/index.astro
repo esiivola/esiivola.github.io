@@ -4,7 +4,8 @@ import { profile } from "../../data/profile";
 import { researchItems } from "../../data/research";
 import { writingItems } from "../../data/writing";
 
-const [processArticle, dataArticle, appliedGuide] = writingItems;
+const industryArticles = writingItems.filter((item) => item.format === "Blog post");
+const appliedGuide = writingItems.find((item) => item.format === "Guide")!;
 const taxaResearch = researchItems.find((item) => item.context === "Recent research");
 const amazonResearch = researchItems.filter((item) => item.context === "Amazon collaboration");
 const novartisResearch = researchItems.find((item) => item.context === "Novartis collaboration");
@@ -33,7 +34,7 @@ const novartisResearch = researchItems.find((item) => item.context === "Novartis
         <h2 id="industry-writing">Industry perspectives</h2>
         <div>
           {
-            [processArticle, dataArticle].map((item) => (
+            industryArticles.map((item) => (
               <article class="evidence-row">
                 <p class="article-meta">{item.format} · {item.source} · {item.date}</p>
                 <h3><a href={item.href}>{item.title}</a></h3>

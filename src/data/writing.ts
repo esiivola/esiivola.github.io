@@ -10,6 +10,16 @@ export type WritingItem = {
 
 export const writingItems: WritingItem[] = [
   {
+    title: "Why AI Agents Need Business-Process Context to Work Reliably",
+    date: "24 August 2026",
+    format: "Blog post",
+    source: "AI Finland",
+    abstract:
+      "Reliable AI agents depend on business-process context and framed autonomy: shared case identifiers, defined process states, and clear boundaries on what an agent may change.",
+    tags: ["AI agents", "Business processes", "Framed autonomy"],
+    href: "https://aifinland.fi/why-ai-agents-need-business-process-context-to-work-reliably/"
+  },
+  {
     title: "AI Value Starts Where the Business Process Changes",
     date: "2 June 2026",
     format: "Blog post",
