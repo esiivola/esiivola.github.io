@@ -1,7 +1,7 @@
 ---
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import AnalyticsConsent from "../components/AnalyticsConsent.astro";
+import ConsentManager from "../components/ConsentManager.astro";
 import "../styles/global.css";
 import { profile } from "../data/profile";
 
@@ -198,10 +198,12 @@ const structuredData = {
       <slot />
     </main>
     <Footer />
-    <AnalyticsConsent />
+    <ConsentManager />
     <script>
       import { initializeSite } from "../scripts/interactions";
+      import { initLinkedInEmbeds } from "../scripts/media-embeds";
       initializeSite();
+      initLinkedInEmbeds();
     </script>
   </body>
 </html>

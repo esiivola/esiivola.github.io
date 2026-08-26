@@ -110,7 +110,7 @@ for (const file of htmlFiles) {
     fail(file, "theme color does not match the site background");
   }
 
-  const analyticsConsent = document.querySelector("[data-analytics-consent]");
+  const analyticsConsent = document.querySelector("[data-consent-root]");
   if (analyticsConsent?.getAttribute("data-analytics-id") !== "G-RK8VRLQ1ND") {
     fail(file, "analytics measurement ID is missing from the consent-controlled loader");
   }

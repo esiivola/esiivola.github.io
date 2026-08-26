@@ -1,0 +1,144 @@
+---
+interface Props {
+  urn: string;
+  title: string;
+  caption?: string;
+}
+
+const { urn, title, caption } = Astro.props;
+const embedSrc = `https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:${urn}?compact=1`;
+const postUrl = `https://www.linkedin.com/feed/update/urn:li:ugcPost:${urn}/`;
+---
+
+<figure
+  class="li-embed"
+  data-linkedin-embed
+  data-embed-src={embedSrc}
+  data-embed-title={title}
+  data-embed-state="blocked"
+>
+  <div class="li-embed-frame-wrap">
+    <div class="li-embed-placeholder" data-embed-placeholder>
+      <p class="li-embed-kicker">LinkedIn video</p>
+      <p class="li-embed-explainer">
+        This video is hosted on LinkedIn. Loading it lets LinkedIn set cookies and collect data about
+        your visit. It stays blocked until you allow embedded media.
+      </p>
+      <div class="li-embed-actions">
+        <button class="li-embed-button" type="button" data-embed-allow>
+          Allow and load video
+        </button>
+        <a class="li-embed-link" href={postUrl} target="_blank" rel="noopener noreferrer">
+          Watch on LinkedIn
+        </a>
+      </div>
+      <p class="li-embed-fineprint">
+        Your choice is saved for other videos too. Change it any time in{" "}
+        <a href="/privacy/">privacy settings</a>.
+      </p>
+    </div>
+  </div>
+  {caption && <figcaption class="li-embed-caption">{caption}</figcaption>}
+</figure>
+
+<style>
+  .li-embed {
+    margin: 0;
+    max-width: 504px;
+  }
+
+  .li-embed-frame-wrap {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 504 / 399;
+    border: 1px solid var(--mist);
+    border-radius: var(--radius);
+    background: var(--white);
+  }
+
+  .li-embed-frame-wrap :global(.li-embed-frame) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .li-embed-placeholder {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    height: 100%;
+    padding: clamp(1.15rem, 3vw, 1.6rem);
+  }
+
+  .li-embed-placeholder[hidden] {
+    display: none;
+  }
+
+  .li-embed-kicker {
+    color: var(--teal);
+    font-family: var(--font-sans);
+    font-size: var(--text-meta);
+    font-weight: 750;
+    letter-spacing: 0.1em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .li-embed-explainer {
+    max-width: 44ch;
+    color: var(--muted);
+    font-size: var(--text-small);
+    line-height: 1.5;
+  }
+
+  .li-embed-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1rem;
+    align-items: center;
+    margin-top: auto;
+  }
+
+  .li-embed-button {
+    min-height: 44px;
+    padding: 0.7rem 1.1rem;
+    border: 1px solid var(--ink);
+    border-radius: 8px;
+    color: var(--paper);
+    background: var(--ink);
+    font-weight: 750;
+    font-size: var(--text-small);
+    line-height: 1.1;
+    cursor: pointer;
+  }
+
+  .li-embed-button:hover {
+    border-color: var(--teal);
+    background: var(--teal);
+  }
+
+  .li-embed-link {
+    color: var(--teal);
+    font-size: var(--text-small);
+    font-weight: 700;
+  }
+
+  .li-embed-fineprint {
+    color: var(--muted);
+    font-size: var(--text-meta);
+    line-height: 1.4;
+  }
+
+  .li-embed-fineprint a {
+    color: var(--teal);
+    font-weight: 700;
+  }
+
+  .li-embed-caption {
+    margin-top: 0.75rem;
+    color: var(--muted);
+    font-size: var(--text-small);
+    line-height: 1.5;
+  }
+</style>

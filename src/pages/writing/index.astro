@@ -1,8 +1,10 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import LinkedInEmbed from "../../components/LinkedInEmbed.astro";
 import { profile } from "../../data/profile";
 import { researchItems } from "../../data/research";
 import { writingItems } from "../../data/writing";
+import { videoItems } from "../../data/videos";
 
 const industryArticles = writingItems.filter((item) => item.format === "Blog post");
 const appliedGuide = writingItems.find((item) => item.format === "Guide")!;
@@ -45,6 +47,19 @@ const novartisResearch = researchItems.find((item) => item.context === "Novartis
           }
         </div>
       </section>
+
+      {
+        videoItems.length > 0 && (
+          <section class="evidence-group" aria-labelledby="video-writing">
+            <h2 id="video-writing">Video</h2>
+            <div class="video-grid">
+              {videoItems.map((video) => (
+                <LinkedInEmbed urn={video.urn} title={video.title} caption={video.caption} />
+              ))}
+            </div>
+          </section>
+        )
+      }
 
       <section class="evidence-group" aria-labelledby="applied-work">
         <h2 id="applied-work">Applied evidence</h2>
@@ -101,3 +116,11 @@ const novartisResearch = researchItems.find((item) => item.context === "Novartis
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .video-grid {
+    display: grid;
+    gap: clamp(1.5rem, 3vw, 2rem);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 504px));
+  }
+</style>

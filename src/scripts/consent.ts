@@ -1,6 +1,12 @@
 export const ANALYTICS_CONSENT_KEY = "eero-analytics-consent-v1";
+export const MEDIA_CONSENT_KEY = "eero-media-consent-v1";
+export const MEDIA_CONSENT_EVENT = "eero:media-consent";
 
-export type AnalyticsConsent = "granted" | "denied";
+export type Consent = "granted" | "denied";
+/** @deprecated Use {@link Consent}. Retained for existing imports. */
+export type AnalyticsConsent = Consent;
+
+type ConsentCategory = "analytics" | "media";
 
 type AnalyticsWindow = Window &
   typeof globalThis & {
@@ -14,29 +20,68 @@ interface ConsentOptions {
   storage?: Storage | null;
 }
 
-function isAnalyticsConsent(value: string | null): value is AnalyticsConsent {
+interface MediaConsentOptions {
+  document?: Document;
+  storage?: Storage | null;
+}
+
+function isConsent(value: string | null): value is Consent {
   return value === "granted" || value === "denied";
 }
 
-export function readAnalyticsConsent(storage: Storage | null): AnalyticsConsent | null {
+function readConsent(key: string, storage: Storage | null): Consent | null {
   if (!storage) return null;
   try {
-    const value = storage.getItem(ANALYTICS_CONSENT_KEY);
-    return isAnalyticsConsent(value) ? value : null;
+    const value = storage.getItem(key);
+    return isConsent(value) ? value : null;
   } catch {
     return null;
   }
 }
 
-export function writeAnalyticsConsent(
-  consent: AnalyticsConsent,
-  storage: Storage | null
-): void {
+function writeConsent(key: string, consent: Consent, storage: Storage | null): void {
   if (!storage) return;
   try {
-    storage.setItem(ANALYTICS_CONSENT_KEY, consent);
+    storage.setItem(key, consent);
   } catch {
     // Consent still applies to the current page if storage is unavailable.
+  }
+}
+
+export function readAnalyticsConsent(storage: Storage | null): Consent | null {
+  return readConsent(ANALYTICS_CONSENT_KEY, storage);
+}
+
+export function writeAnalyticsConsent(consent: Consent, storage: Storage | null): void {
+  writeConsent(ANALYTICS_CONSENT_KEY, consent, storage);
+}
+
+export function readMediaConsent(storage: Storage | null): Consent | null {
+  return readConsent(MEDIA_CONSENT_KEY, storage);
+}
+
+export function writeMediaConsent(consent: Consent, storage: Storage | null): void {
+  writeConsent(MEDIA_CONSENT_KEY, consent, storage);
+}
+
+/**
+ * Persist a media-consent decision and broadcast it so any embedded players on
+ * the page load or unload themselves in response. Called both from the consent
+ * dialog and from the in-place prompt shown on each embed.
+ */
+export function setMediaConsent(consent: Consent, options: MediaConsentOptions = {}): void {
+  const doc = options.document ?? document;
+  let storage = options.storage;
+  if (storage === undefined) storage = safeStorage(doc.defaultView as AnalyticsWindow | null);
+  writeMediaConsent(consent, storage);
+  doc.dispatchEvent(new CustomEvent<{ consent: Consent }>(MEDIA_CONSENT_EVENT, { detail: { consent } }));
+}
+
+function safeStorage(win: AnalyticsWindow | null): Storage | null {
+  try {
+    return win?.localStorage ?? null;
+  } catch {
+    return null;
   }
 }
 
@@ -110,24 +155,33 @@ function closeDialog(dialog: HTMLDialogElement): void {
   else dialog.removeAttribute("open");
 }
 
-export function initializeAnalyticsConsent(options: ConsentOptions = {}) {
+function statusText(consent: Consent | null): string {
+  return consent === "granted"
+    ? "Allowed"
+    : consent === "denied"
+      ? "Declined"
+      : "Not decided";
+}
+
+/**
+ * Wire the consent surface: the first-run analytics banner, the reopenable
+ * settings dialog (analytics and embedded-media rows), and the floating
+ * settings button. Analytics consent gates Google Analytics; media consent is
+ * persisted and broadcast for embedded players to react to.
+ */
+export function initializeConsent(options: ConsentOptions = {}) {
   const doc = options.document ?? document;
   const win = options.window ?? (window as AnalyticsWindow);
   let storage = options.storage;
-  if (storage === undefined) {
-    try {
-      storage = win.localStorage;
-    } catch {
-      storage = null;
-    }
-  }
-  const root = doc.querySelector<HTMLElement>("[data-analytics-consent]");
+  if (storage === undefined) storage = safeStorage(win);
+
+  const root = doc.querySelector<HTMLElement>("[data-consent-root]");
   if (!root) return () => {};
 
   const banner = root.querySelector<HTMLElement>("[data-consent-banner]");
   const dialog = root.querySelector<HTMLDialogElement>("[data-consent-dialog]");
   const settingsButtons = Array.from(
-    doc.querySelectorAll<HTMLButtonElement>("[data-open-analytics-settings]")
+    doc.querySelectorAll<HTMLButtonElement>("[data-open-consent-settings]")
   );
   const choiceButtons = Array.from(
     root.querySelectorAll<HTMLButtonElement>("[data-consent-choice]")
@@ -139,56 +193,66 @@ export function initializeAnalyticsConsent(options: ConsentOptions = {}) {
 
   if (!banner || !dialog) return () => {};
 
-  const setInterfaceState = (consent: AnalyticsConsent | null) => {
+  const setStatus = (category: ConsentCategory, consent: Consent | null) => {
+    root
+      .querySelectorAll<HTMLElement>(`[data-consent-status][data-consent-category="${category}"]`)
+      .forEach((status) => {
+        status.textContent = `${category === "media" ? "Videos" : "Analytics"} ${statusText(
+          consent
+        ).toLowerCase()}`;
+      });
+  };
+
+  const setAnalyticsInterface = (consent: Consent | null) => {
     root.dataset.consent = consent ?? "unset";
     banner.hidden = consent !== null;
     settingsButtons.forEach((button) => {
       button.hidden = consent === null;
     });
-    root.querySelectorAll<HTMLElement>("[data-consent-status]").forEach((status) => {
-      status.textContent =
-        consent === "granted"
-          ? "Analytics allowed"
-          : consent === "denied"
-            ? "Analytics declined"
-            : "Not decided";
-    });
+    setStatus("analytics", consent);
   };
 
-  const applyConsent = (consent: AnalyticsConsent) => {
+  const applyAnalytics = (consent: Consent) => {
     writeAnalyticsConsent(consent, storage);
     if (consent === "granted") loadGoogleAnalytics(measurementId, doc, win);
     else revokeGoogleAnalytics(doc, win);
-    setInterfaceState(consent);
+    setAnalyticsInterface(consent);
     closeDialog(dialog);
   };
 
-  const initialConsent = readAnalyticsConsent(storage);
-  if (initialConsent === "granted") loadGoogleAnalytics(measurementId, doc, win);
-  setInterfaceState(initialConsent);
+  const applyMedia = (consent: Consent) => {
+    setMediaConsent(consent, { document: doc, storage });
+    closeDialog(dialog);
+  };
+
+  const initialAnalytics = readAnalyticsConsent(storage);
+  if (initialAnalytics === "granted") loadGoogleAnalytics(measurementId, doc, win);
+  setAnalyticsInterface(initialAnalytics);
+  setStatus("media", readMediaConsent(storage));
 
   const listeners: Array<() => void> = [];
+  const on = (target: EventTarget, type: string, handler: EventListener) => {
+    target.addEventListener(type, handler);
+    listeners.push(() => target.removeEventListener(type, handler));
+  };
 
   for (const button of choiceButtons) {
-    const listener = () => {
+    on(button, "click", () => {
       const choice = button.dataset.consentChoice ?? null;
-      if (isAnalyticsConsent(choice)) applyConsent(choice);
-    };
-    button.addEventListener("click", listener);
-    listeners.push(() => button.removeEventListener("click", listener));
+      if (!isConsent(choice)) return;
+      const category = button.dataset.consentCategory === "media" ? "media" : "analytics";
+      if (category === "media") applyMedia(choice);
+      else applyAnalytics(choice);
+    });
   }
 
-  for (const button of settingsButtons) {
-    const listener = () => showDialog(dialog);
-    button.addEventListener("click", listener);
-    listeners.push(() => button.removeEventListener("click", listener));
-  }
+  for (const button of settingsButtons) on(button, "click", () => showDialog(dialog));
+  for (const button of closeButtons) on(button, "click", () => closeDialog(dialog));
 
-  for (const button of closeButtons) {
-    const listener = () => closeDialog(dialog);
-    button.addEventListener("click", listener);
-    listeners.push(() => button.removeEventListener("click", listener));
-  }
+  // Keep the dialog's media status in sync with in-place prompts on embeds.
+  on(doc, MEDIA_CONSENT_EVENT, ((event: CustomEvent<{ consent: Consent }>) => {
+    setStatus("media", event.detail?.consent ?? readMediaConsent(storage));
+  }) as EventListener);
 
   return () => listeners.forEach((remove) => remove());
 }

@@ -4,7 +4,7 @@ const googleAnalyticsId = "G-RK8VRLQ1ND";
 
 <div
   class="analytics-consent"
-  data-analytics-consent
+  data-consent-root
   data-analytics-id={googleAnalyticsId}
   data-consent="unset"
 >
@@ -21,13 +21,23 @@ const googleAnalyticsId = "G-RK8VRLQ1ND";
         I would like to use Google Analytics to understand which pages are useful. No Google
         Analytics code loads unless you allow it.
       </p>
-      <a href="/privacy/">How analytics and your choice are handled</a>
+      <a href="/privacy/">How analytics, embedded video, and your choices are handled</a>
     </div>
     <div class="consent-actions" aria-label="Analytics consent choices">
-      <button class="consent-button consent-button-primary" type="button" data-consent-choice="granted">
+      <button
+        class="consent-button consent-button-primary"
+        type="button"
+        data-consent-category="analytics"
+        data-consent-choice="granted"
+      >
         Allow analytics
       </button>
-      <button class="consent-button consent-button-quiet" type="button" data-consent-choice="denied">
+      <button
+        class="consent-button consent-button-quiet"
+        type="button"
+        data-consent-category="analytics"
+        data-consent-choice="denied"
+      >
         Decline analytics
       </button>
     </div>
@@ -36,11 +46,11 @@ const googleAnalyticsId = "G-RK8VRLQ1ND";
   <button
     class="consent-settings"
     type="button"
-    data-open-analytics-settings
+    data-open-consent-settings
     aria-haspopup="dialog"
     hidden
   >
-    Analytics settings
+    Privacy settings
   </button>
 
   <dialog class="consent-dialog" data-consent-dialog aria-labelledby="consent-dialog-title">
@@ -48,12 +58,13 @@ const googleAnalyticsId = "G-RK8VRLQ1ND";
       <div class="consent-dialog-heading">
         <div>
           <p class="consent-kicker">Privacy</p>
-          <h2 id="consent-dialog-title">Analytics preferences</h2>
+          <h2 id="consent-dialog-title">Privacy preferences</h2>
         </div>
-        <button class="consent-close" type="button" data-consent-close aria-label="Close analytics settings">
+        <button class="consent-close" type="button" data-consent-close aria-label="Close privacy settings">
           Close
         </button>
       </div>
+
       <div class="consent-choice-row">
         <div>
           <h3>Optional analytics</h3>
@@ -63,14 +74,60 @@ const googleAnalyticsId = "G-RK8VRLQ1ND";
           </p>
           <a href="/privacy/">Read the privacy information</a>
         </div>
-        <p class="consent-status" data-consent-status aria-live="polite">Not decided</p>
+        <p class="consent-status" data-consent-status data-consent-category="analytics" aria-live="polite">
+          Not decided
+        </p>
       </div>
-      <div class="consent-dialog-actions">
-        <button class="consent-button consent-button-primary" type="button" data-consent-choice="granted">
+
+      <div class="consent-choice-row">
+        <div>
+          <h3>Embedded video</h3>
+          <p>
+            Lets LinkedIn videos load in the page. LinkedIn then sets its own cookies and may
+            collect data and track you. Videos stay blocked until you allow this.
+          </p>
+          <a href="/privacy/">Read the privacy information</a>
+        </div>
+        <p class="consent-status" data-consent-status data-consent-category="media" aria-live="polite">
+          Not decided
+        </p>
+      </div>
+
+      <div class="consent-dialog-actions" aria-label="Analytics choices">
+        <button
+          class="consent-button consent-button-primary"
+          type="button"
+          data-consent-category="analytics"
+          data-consent-choice="granted"
+        >
           Allow analytics
         </button>
-        <button class="consent-button consent-button-secondary" type="button" data-consent-choice="denied">
+        <button
+          class="consent-button consent-button-secondary"
+          type="button"
+          data-consent-category="analytics"
+          data-consent-choice="denied"
+        >
           Decline analytics
+        </button>
+      </div>
+
+      <div class="consent-dialog-actions" aria-label="Embedded video choices">
+        <button
+          class="consent-button consent-button-primary"
+          type="button"
+          data-consent-category="media"
+          data-consent-choice="granted"
+        >
+          Allow embedded video
+        </button>
+        <button
+          class="consent-button consent-button-secondary"
+          type="button"
+          data-consent-category="media"
+          data-consent-choice="denied"
+        >
+          Decline embedded video
         </button>
       </div>
     </div>
@@ -78,9 +135,9 @@ const googleAnalyticsId = "G-RK8VRLQ1ND";
 </div>
 
 <script>
-  import { initializeAnalyticsConsent } from "../scripts/consent";
+  import { initializeConsent } from "../scripts/consent";
 
-  initializeAnalyticsConsent();
+  initializeConsent();
 </script>
 
 <style>
@@ -320,6 +377,10 @@ const googleAnalyticsId = "G-RK8VRLQ1ND";
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .consent-dialog-actions + .consent-dialog-actions {
+    padding-top: 0;
+  }
+
   @media (max-width: 699px) {
     .consent-banner {
       bottom: 0.625rem;
@@ -363,6 +424,10 @@ const googleAnalyticsId = "G-RK8VRLQ1ND";
 
     .consent-dialog-actions {
       padding: 1rem 1.25rem 1.25rem;
+    }
+
+    .consent-dialog-actions + .consent-dialog-actions {
+      padding-top: 0;
     }
 
     .consent-dialog-actions .consent-button {

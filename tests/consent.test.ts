@@ -1,18 +1,23 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   ANALYTICS_CONSENT_KEY,
-  initializeAnalyticsConsent
+  MEDIA_CONSENT_KEY,
+  MEDIA_CONSENT_EVENT,
+  initializeConsent
 } from "../src/scripts/consent";
 
 function consentMarkup(measurementId = "") {
   document.body.innerHTML = `
-    <div data-analytics-consent data-analytics-id="${measurementId}">
+    <div data-consent-root data-analytics-id="${measurementId}">
       <section data-consent-banner hidden>Consent</section>
-      <button data-open-analytics-settings hidden>Settings</button>
-      <button data-consent-choice="granted">Allow</button>
-      <button data-consent-choice="denied">Decline</button>
+      <button data-open-consent-settings hidden>Settings</button>
+      <button data-consent-category="analytics" data-consent-choice="granted">Allow analytics</button>
+      <button data-consent-category="analytics" data-consent-choice="denied">Decline analytics</button>
+      <button data-consent-category="media" data-consent-choice="granted">Allow media</button>
+      <button data-consent-category="media" data-consent-choice="denied">Decline media</button>
       <dialog data-consent-dialog>
-        <p data-consent-status>Not decided</p>
+        <p data-consent-status data-consent-category="analytics">Not decided</p>
+        <p data-consent-status data-consent-category="media">Not decided</p>
         <button data-consent-close>Close</button>
       </dialog>
     </div>
@@ -33,6 +38,19 @@ function memoryStorage(): Storage {
   };
 }
 
+const analyticsButton = (choice: "granted" | "denied") =>
+  document.querySelector<HTMLButtonElement>(
+    `[data-consent-category="analytics"][data-consent-choice="${choice}"]`
+  )!;
+
+const mediaButton = (choice: "granted" | "denied") =>
+  document.querySelector<HTMLButtonElement>(
+    `[data-consent-category="media"][data-consent-choice="${choice}"]`
+  )!;
+
+const statusText = (category: "analytics" | "media") =>
+  document.querySelector(`[data-consent-status][data-consent-category="${category}"]`)!.textContent;
+
 afterEach(() => {
   document.body.innerHTML = "";
   document.head.querySelector("#google-analytics-tag")?.remove();
@@ -46,13 +64,11 @@ describe("analytics consent", () => {
     consentMarkup();
     const storage = memoryStorage();
 
-    initializeAnalyticsConsent({ storage });
+    initializeConsent({ storage });
 
     expect(document.querySelector<HTMLElement>("[data-consent-banner]")!.hidden).toBe(false);
-    expect(document.querySelector<HTMLElement>("[data-open-analytics-settings]")!.hidden).toBe(
-      true
-    );
-    expect(document.querySelector("[data-analytics-consent]")!.getAttribute("data-consent")).toBe(
+    expect(document.querySelector<HTMLElement>("[data-open-consent-settings]")!.hidden).toBe(true);
+    expect(document.querySelector("[data-consent-root]")!.getAttribute("data-consent")).toBe(
       "unset"
     );
   });
@@ -61,25 +77,23 @@ describe("analytics consent", () => {
     consentMarkup("G-TEST123");
     const storage = memoryStorage();
 
-    initializeAnalyticsConsent({ storage });
-    document.querySelector<HTMLButtonElement>('[data-consent-choice="denied"]')!.click();
+    initializeConsent({ storage });
+    analyticsButton("denied").click();
 
     expect(storage.getItem(ANALYTICS_CONSENT_KEY)).toBe("denied");
     expect(document.querySelector("#google-analytics-tag")).toBeNull();
     expect(document.querySelector<HTMLElement>("[data-consent-banner]")!.hidden).toBe(true);
-    expect(document.querySelector<HTMLElement>("[data-open-analytics-settings]")!.hidden).toBe(
-      false
-    );
+    expect(document.querySelector<HTMLElement>("[data-open-consent-settings]")!.hidden).toBe(false);
   });
 
   it("loads Google Analytics only after explicit acceptance", () => {
     consentMarkup("G-TEST123");
     const storage = memoryStorage();
 
-    initializeAnalyticsConsent({ storage });
+    initializeConsent({ storage });
     expect(document.querySelector("#google-analytics-tag")).toBeNull();
 
-    document.querySelector<HTMLButtonElement>('[data-consent-choice="granted"]')!.click();
+    analyticsButton("granted").click();
 
     const script = document.querySelector<HTMLScriptElement>("#google-analytics-tag");
     const commands = (window as typeof window & { dataLayer?: unknown[][] }).dataLayer ?? [];
@@ -105,13 +119,52 @@ describe("analytics consent", () => {
     const dialog = document.querySelector<HTMLDialogElement>("dialog")!;
     dialog.showModal = vi.fn(() => dialog.setAttribute("open", ""));
 
-    initializeAnalyticsConsent({ storage });
-    document.querySelector<HTMLButtonElement>("[data-open-analytics-settings]")!.click();
+    initializeConsent({ storage });
+    document.querySelector<HTMLButtonElement>("[data-open-consent-settings]")!.click();
 
     expect(dialog.showModal).toHaveBeenCalledOnce();
     expect(dialog.hasAttribute("open")).toBe(true);
-    expect(document.querySelector("[data-consent-status]")!.textContent).toBe(
-      "Analytics declined"
-    );
+    expect(statusText("analytics")).toBe("Analytics declined");
+  });
+});
+
+describe("media consent", () => {
+  it("does not load Google Analytics when only media is decided", () => {
+    consentMarkup("G-TEST123");
+    const storage = memoryStorage();
+
+    initializeConsent({ storage });
+    mediaButton("granted").click();
+
+    expect(storage.getItem(MEDIA_CONSENT_KEY)).toBe("granted");
+    expect(storage.getItem(ANALYTICS_CONSENT_KEY)).toBeNull();
+    expect(document.querySelector("#google-analytics-tag")).toBeNull();
+  });
+
+  it("persists a media decision and broadcasts it for embeds", () => {
+    consentMarkup();
+    const storage = memoryStorage();
+    const received: string[] = [];
+    document.addEventListener(MEDIA_CONSENT_EVENT, (event) => {
+      received.push((event as CustomEvent<{ consent: string }>).detail.consent);
+    });
+
+    initializeConsent({ storage });
+    mediaButton("granted").click();
+    mediaButton("denied").click();
+
+    expect(received).toEqual(["granted", "denied"]);
+    expect(storage.getItem(MEDIA_CONSENT_KEY)).toBe("denied");
+    expect(statusText("media")).toBe("Videos declined");
+  });
+
+  it("restores a saved media choice in the settings status", () => {
+    consentMarkup();
+    const storage = memoryStorage();
+    storage.setItem(MEDIA_CONSENT_KEY, "granted");
+
+    initializeConsent({ storage });
+
+    expect(statusText("media")).toBe("Videos allowed");
   });
 });

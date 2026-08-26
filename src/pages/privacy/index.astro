@@ -43,14 +43,36 @@ import { profile } from "../../data/profile";
         <a href="https://policies.google.com/privacy">Google Privacy Policy</a>.
       </p>
 
-      <h2>Your saved choice</h2>
+      <h2>Embedded LinkedIn video</h2>
       <p>
-        The site stores your analytics choice in your browser's local storage under
-        <code>eero-analytics-consent-v1</code>. This strictly necessary value records only
-        <code>granted</code> or <code>denied</code>. It is not sent to Eero or to Google.
+        Some pages feature short videos published on LinkedIn. These are embedded directly from
+        <code>linkedin.com</code>, so loading one lets LinkedIn set its own cookies and collect data
+        about your visit, including tracking that may be linked to a LinkedIn account. Because this
+        is third-party tracking, no video loads until you allow it.
       </p>
-      <button class="privacy-settings-button" type="button" data-open-analytics-settings hidden>
-        Change analytics settings
+      <p>
+        Until you allow embedded video, each video shows a placeholder in its place with a short
+        explanation. You can allow it there, or under <strong>Embedded video</strong> in privacy
+        settings; you can also open any video directly on LinkedIn without allowing it here. Allowing
+        embedded video means you acknowledge that LinkedIn may collect data and track you under its
+        own terms, described in the{" "}
+        <a href="https://www.linkedin.com/legal/privacy-policy">LinkedIn Privacy Policy</a>.
+      </p>
+      <p>
+        Declining, or later changing your choice to declined, stops further videos from loading.
+        Cookies that LinkedIn already set through a video you had loaded are governed by LinkedIn and
+        can be cleared through your browser.
+      </p>
+
+      <h2>Your saved choices</h2>
+      <p>
+        The site stores your choices in your browser's local storage: your analytics choice under
+        <code>eero-analytics-consent-v1</code> and your embedded-video choice under
+        <code>eero-media-consent-v1</code>. Each strictly necessary value records only
+        <code>granted</code> or <code>denied</code>. Neither is sent to Eero, Google, or LinkedIn.
+      </p>
+      <button class="privacy-settings-button" type="button" data-open-consent-settings hidden>
+        Change privacy settings
       </button>
 
       <h2>External links</h2>
