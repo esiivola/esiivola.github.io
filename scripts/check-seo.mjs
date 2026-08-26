@@ -160,7 +160,9 @@ const robots = await readFile(path.join(root, "robots.txt"), "utf8");
 for (const directive of [
   "User-agent: OAI-SearchBot",
   "User-agent: PerplexityBot",
-  `Sitemap: ${siteUrl}/sitemap-index.xml`
+  `Sitemap: ${siteUrl}/sitemap-index.xml`,
+  `Sitemap: ${siteUrl}/helsinki-meluilmoitukset/sitemap.xml`,
+  `Sitemap: ${siteUrl}/helsinki-parking/sitemap.xml`
 ]) {
   if (!robots.includes(directive)) failures.push(`robots.txt: missing ${directive}`);
 }
