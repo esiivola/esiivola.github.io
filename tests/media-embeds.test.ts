@@ -8,8 +8,10 @@ function embedMarkup() {
             data-embed-src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:123?compact=1"
             data-embed-title="Test video"
             data-embed-state="blocked">
-      <div class="li-embed-placeholder" data-embed-placeholder>
-        <button type="button" data-embed-allow>Allow and load video</button>
+      <div class="li-embed-frame-wrap">
+        <div class="li-embed-placeholder" data-embed-placeholder>
+          <button type="button" data-embed-allow>Allow and load video</button>
+        </div>
       </div>
     </figure>
   `;

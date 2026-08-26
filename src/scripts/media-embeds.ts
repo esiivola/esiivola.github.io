@@ -22,6 +22,8 @@ function mountFrame(embed: HTMLElement): void {
   const src = embed.dataset.embedSrc;
   if (!src || embed.querySelector("iframe")) return;
 
+  const wrap = embed.querySelector<HTMLElement>(".li-embed-frame-wrap") ?? embed;
+
   const frame = embed.ownerDocument.createElement("iframe");
   frame.src = src;
   frame.title = embed.dataset.embedTitle || "Embedded LinkedIn video";
@@ -32,9 +34,9 @@ function mountFrame(embed: HTMLElement): void {
   frame.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
   frame.allowFullscreen = true;
 
-  const placeholder = embed.querySelector<HTMLElement>("[data-embed-placeholder]");
+  const placeholder = wrap.querySelector<HTMLElement>("[data-embed-placeholder]");
   if (placeholder) placeholder.hidden = true;
-  embed.append(frame);
+  wrap.append(frame);
   embed.dataset.embedState = "loaded";
 }
 

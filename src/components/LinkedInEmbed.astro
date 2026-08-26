@@ -44,13 +44,18 @@ const postUrl = `https://www.linkedin.com/feed/update/urn:li:ugcPost:${urn}/`;
 <style>
   .li-embed {
     margin: 0;
-    max-width: 504px;
+    max-width: 340px;
   }
 
+  /*
+   * LinkedIn's compact embed is a responsive player: a fixed ~256px header
+   * (post text, Like/Share) above the clip. These clips are 4:5 portrait, so
+   * the box is portrait — header height plus a 4:5 video area at this width.
+   */
   .li-embed-frame-wrap {
     position: relative;
     overflow: hidden;
-    aspect-ratio: 504 / 399;
+    aspect-ratio: 400 / 760;
     border: 1px solid var(--mist);
     border-radius: var(--radius);
     background: var(--white);
