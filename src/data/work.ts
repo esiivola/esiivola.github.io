@@ -87,6 +87,31 @@ export const externalCase = {
   href: "https://www.vuonogroup.com/blog/case-excgroup-ai-driven-rd-process-with-ultrasonic-wind-estimation-data"
 } as const;
 
+export const externalCaseStoria = {
+  label: "External case study · Vuono Group",
+  title: "Data architecture and AI strategy for Storia",
+  summary:
+    "Vuono Group's public case describes an architecture and strategy project for Storia, a logistics company with over a century of operations. The work turned extensive historical operational data into a prioritised roadmap for analytics and AI.",
+  details: [
+    {
+      label: "Problem",
+      value:
+        "Make sense of a century of operational data and an ongoing ERP transformation with a clear architecture and AI strategy."
+    },
+    {
+      label: "Work",
+      value:
+        "Design a data-driven IT architecture and integration strategy, map end-to-end data flows, and prioritise analytics and AI opportunities."
+    },
+    {
+      label: "Result",
+      value:
+        "A shared architectural roadmap and prioritised AI use cases, with a foundation for real-time analytics and predictive capabilities."
+    }
+  ],
+  href: "https://www.vuonogroup.com/blog/case-storia-architecture-and-supply-chain-processes-in-logistics-company"
+} as const;
+
 export const workScale = [
   {
     value: "10+ years",
