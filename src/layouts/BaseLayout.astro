@@ -31,7 +31,7 @@ const websiteId = `${siteRoot.href}#website`;
 const pageId = `${canonical.href}#webpage`;
 const pageName = title.split(" | ")[0];
 const isProfilePage = currentPath === "/about/";
-const isCollectionPage = ["/work/", "/writing/", "/research/"].includes(currentPath);
+const isCollectionPage = ["/writing/"].includes(currentPath);
 const pageType = isProfilePage ? "ProfilePage" : isCollectionPage ? "CollectionPage" : "WebPage";
 const robots = noindex
   ? "noindex, nofollow"

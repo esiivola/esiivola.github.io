@@ -1,16 +1,19 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import LinkedInEmbed from "../../components/LinkedInEmbed.astro";
 import { profile } from "../../data/profile";
 import { researchItems } from "../../data/research";
 import { writingItems } from "../../data/writing";
-import { videoItems } from "../../data/videos";
 
 const industryArticles = writingItems.filter((item) => item.format === "Blog post");
 const appliedGuide = writingItems.find((item) => item.format === "Guide")!;
 const taxaResearch = researchItems.find((item) => item.context === "Recent research");
-const amazonResearch = researchItems.filter((item) => item.context === "Amazon collaboration");
-const novartisResearch = researchItems.find((item) => item.context === "Novartis collaboration");
+// Everything from the former research archive except the two items already shown
+// above: the applied guide (duplicated as "Recent applied report") and the taxa
+// paper ("Recent research"). Keeping the list here means /research/ is no longer
+// a separate page.
+const publications = researchItems.filter(
+  (item) => item.context !== "Recent applied report" && item.context !== "Recent research"
+);
 ---
 
 <BaseLayout
@@ -24,8 +27,8 @@ const novartisResearch = researchItems.find((item) => item.context === "Novartis
         <h1>Writing and research on data, AI, and decisions.</h1>
       </div>
       <p>
-        Industry perspectives on process ownership and data quality, alongside applied research
-        that shows the technical foundation behind my work.
+        Industry perspectives on process ownership and data quality, alongside the applied
+        publications and research that show the technical foundation behind my work.
       </p>
     </div>
   </header>
@@ -47,19 +50,6 @@ const novartisResearch = researchItems.find((item) => item.context === "Novartis
           }
         </div>
       </section>
-
-      {
-        videoItems.length > 0 && (
-          <section class="evidence-group" aria-labelledby="video-writing">
-            <h2 id="video-writing">Video</h2>
-            <div class="video-grid">
-              {videoItems.map((video) => (
-                <LinkedInEmbed urn={video.urn} title={video.title} caption={video.caption} />
-              ))}
-            </div>
-          </section>
-        )
-      }
 
       <section class="evidence-group" aria-labelledby="applied-work">
         <h2 id="applied-work">Applied evidence</h2>
@@ -83,17 +73,17 @@ const novartisResearch = researchItems.find((item) => item.context === "Novartis
         </div>
       </section>
 
-      <section class="evidence-group" aria-labelledby="earlier-collaborations">
-        <h2 id="earlier-collaborations">Research collaborations</h2>
+      <section class="evidence-group" aria-labelledby="research-publications">
+        <h2 id="research-publications">Research and publications</h2>
         <div>
           {
-            [...amazonResearch, novartisResearch].filter(Boolean).map((item) => (
+            publications.map((item) => (
               <article class="evidence-row">
-                <p class="article-meta">{item!.context} · {item!.year}</p>
-                <h3><a href={item!.links[0].href}>{item!.title}</a></h3>
-                <p>{item!.summary}</p>
+                <p class="article-meta">{item.context} · {item.year}</p>
+                <h3><a href={item.links[0].href}>{item.title}</a></h3>
+                <p>{item.summary}</p>
                 <div class="evidence-links">
-                  {item!.links.map((link) => <a class="text-link" href={link.href}>{link.label}</a>)}
+                  {item.links.map((link) => <a class="text-link" href={link.href}>{link.label}</a>)}
                 </div>
               </article>
             ))
@@ -106,21 +96,13 @@ const novartisResearch = researchItems.find((item) => item.context === "Novartis
   <section class="evidence-archive">
     <div class="shell evidence-archive-grid">
       <p>
-        The full archive includes the doctoral dissertation, earlier papers, and open-source
-        implementations.
+        The full publication record and open-source implementations are available on Google Scholar
+        and GitHub.
       </p>
       <div>
-        <a class="text-link" href="/research/">Browse the research archive</a>
         <a class="text-link" href={profile.social.scholar}>View Google Scholar</a>
+        <a class="text-link" href={profile.social.github}>View GitHub</a>
       </div>
     </div>
   </section>
 </BaseLayout>
-
-<style>
-  .video-grid {
-    display: grid;
-    gap: clamp(1.5rem, 3vw, 2rem);
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 340px));
-  }
-</style>

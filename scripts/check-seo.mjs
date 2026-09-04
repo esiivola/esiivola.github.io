@@ -12,7 +12,7 @@ const failures = [];
 const titles = new Map();
 const descriptions = new Map();
 
-const requiredRoutes = ["/", "/about/", "/privacy/", "/research/", "/work/", "/writing/"];
+const requiredRoutes = ["/", "/about/", "/privacy/", "/writing/"];
 const requiredGraphTypes = ["WebSite", "Person"];
 
 async function walk(directory) {
