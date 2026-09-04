@@ -91,7 +91,7 @@ export const externalCaseStoria = {
   label: "External case study · Vuono Group",
   title: "Data architecture and AI strategy for Storia",
   summary:
-    "Vuono Group's public case describes an architecture and strategy project for Storia, a logistics company with over a century of operations. The work turned extensive historical operational data into a prioritised roadmap for analytics and AI.",
+    "Vuono Group's public case describes an architecture and strategy project for Storia, a logistics company with over a century of operations. The work turned extensive historical operational data into a prioritised plan for analytics and AI.",
   details: [
     {
       label: "Problem",
@@ -106,7 +106,7 @@ export const externalCaseStoria = {
     {
       label: "Result",
       value:
-        "A shared architectural roadmap and prioritised AI use cases, with a foundation for real-time analytics and predictive capabilities."
+        "A shared architecture direction and prioritised AI use cases, with a foundation for real-time analytics and predictive capabilities."
     }
   ],
   href: "https://www.vuonogroup.com/blog/case-storia-architecture-and-supply-chain-processes-in-logistics-company"
