@@ -3,7 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Portrait from "../components/Portrait.astro";
 import { profile } from "../data/profile";
 import { researchItems } from "../data/research";
-import { externalCase } from "../data/work";
+import { externalCases } from "../data/work";
 import { writingItems } from "../data/writing";
 
 const recentResearch = researchItems.find((item) => item.context === "Recent research");
@@ -51,17 +51,21 @@ const appliedGuide = writingItems.find((item) => item.format === "Guide");
     <div class="shell selected-case-grid">
       <div class="selected-case-label">
         <p class="kicker">Selected work</p>
-        <p>Public case · Vuono Group</p>
+        <p>Public cases · Vuono Group</p>
       </div>
-      <article>
-        <h2>From uncertain measurements to a repeatable R&D system.</h2>
-        <p>{externalCase.summary}</p>
-        <p>
-          The result connected measured and synthetic data, repeatable benchmarking, and modular
-          signal-processing software prepared for embedded development.
-        </p>
-        <a class="text-link" href={externalCase.href}>Read the public case at Vuono Group</a>
-      </article>
+      <div class="selected-case-list">
+        {
+          externalCases.map((item) => (
+            <article>
+              <p class="article-meta">{item.date}</p>
+              <h2>{item.title}</h2>
+              <p>{item.summary}</p>
+              <a class="text-link" href={item.href}>Read the public case at Vuono Group</a>
+            </article>
+          ))
+        }
+        <a class="text-link selected-case-more" href="/work/">See how I approach the work</a>
+      </div>
     </div>
   </section>
 

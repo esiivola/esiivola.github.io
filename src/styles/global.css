@@ -3087,11 +3087,37 @@ em {
   max-width: 900px;
 }
 
+.selected-case-list {
+  display: grid;
+  gap: clamp(2.75rem, 5vw, 4.5rem);
+}
+
+.selected-case-list article {
+  max-width: 640px;
+}
+
+.selected-case-list article + article {
+  padding-top: clamp(2.75rem, 5vw, 4.5rem);
+  border-top: 1px solid rgb(244 241 232 / 0.14);
+}
+
+.selected-case-list .article-meta {
+  margin-bottom: 0.75rem;
+  color: rgb(244 241 232 / 0.55);
+}
+
 .selected-case h2 {
   max-width: 17ch;
   margin-bottom: 2rem;
   font-size: clamp(3rem, 5.8vw, 6.6rem);
   line-height: 0.96;
+}
+
+.selected-case-list h2 {
+  max-width: 22ch;
+  margin-bottom: 1rem;
+  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+  line-height: 1.05;
 }
 
 .selected-case article > p {
@@ -3101,6 +3127,10 @@ em {
 
 .selected-case .text-link {
   color: var(--teal-light);
+}
+
+.selected-case-more {
+  font-size: var(--text-small);
 }
 
 .home-evidence-index {

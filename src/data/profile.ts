@@ -15,6 +15,7 @@ export const profile = {
 } as const;
 
 export const navigation = [
+  { label: "Work", href: "/work/", external: false },
   { label: "Writing", href: "/writing/", external: false },
   { label: "About", href: "/about/", external: false },
   { label: "Contact", href: profile.social.linkedin, external: true }
