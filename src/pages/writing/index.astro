@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { profile } from "../../data/profile";
 import { researchItems } from "../../data/research";
 import { writingItems } from "../../data/writing";
 
@@ -90,19 +89,6 @@ const publications = researchItems.filter(
           }
         </div>
       </section>
-    </div>
-  </section>
-
-  <section class="evidence-archive">
-    <div class="shell evidence-archive-grid">
-      <p>
-        The full publication record and open-source implementations are available on Google Scholar
-        and GitHub.
-      </p>
-      <div>
-        <a class="text-link" href={profile.social.scholar}>View Google Scholar</a>
-        <a class="text-link" href={profile.social.github}>View GitHub</a>
-      </div>
     </div>
   </section>
 </BaseLayout>
