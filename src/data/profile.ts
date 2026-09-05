@@ -15,7 +15,7 @@ export const profile = {
 } as const;
 
 export const navigation = [
-  { label: "Writing", href: "/writing/", external: false },
+  { label: "Writing and research", href: "/writing/", external: false },
   { label: "About", href: "/about/", external: false },
   { label: "Contact", href: profile.social.linkedin, external: true }
 ] as const;
