@@ -5,11 +5,11 @@ import { writingItems } from "../../data/writing";
 
 const industryArticles = writingItems.filter((item) => item.format === "Blog post");
 const appliedGuide = writingItems.find((item) => item.format === "Guide")!;
-const taxaResearch = researchItems.find((item) => item.context === "Recent research");
+const recentResearch = researchItems.find((item) => item.context === "Recent research");
 // Everything from the former research archive except the two items already shown
-// above: the applied guide (duplicated as "Recent applied report") and the taxa
-// paper ("Recent research"). Keeping the list here means /research/ is no longer
-// a separate page.
+// above: the applied guide (duplicated as "Recent applied report") and the
+// newest paper ("Recent research"). Keeping the list here means /research/ is no
+// longer a separate page.
 const publications = researchItems.filter(
   (item) => item.context !== "Recent applied report" && item.context !== "Recent research"
 );
@@ -60,12 +60,12 @@ const publications = researchItems.filter(
             <a class="text-link" href={appliedGuide.href}>Read the public guide</a>
           </article>
           {
-            taxaResearch && (
+            recentResearch && (
               <article class="evidence-row">
-                <p class="article-meta">{taxaResearch.context} · {taxaResearch.year}</p>
-                <h3><a href={taxaResearch.links[0].href}>{taxaResearch.title}</a></h3>
-                <p>{taxaResearch.summary}</p>
-                <a class="text-link" href={taxaResearch.links[0].href}>Read the paper</a>
+                <p class="article-meta">{recentResearch.context} · {recentResearch.year}</p>
+                <h3><a href={recentResearch.links[0].href}>{recentResearch.title}</a></h3>
+                <p>{recentResearch.summary}</p>
+                <a class="text-link" href={recentResearch.links[0].href}>Read the paper</a>
               </article>
             )
           }

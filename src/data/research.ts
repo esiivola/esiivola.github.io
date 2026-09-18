@@ -9,6 +9,16 @@ export type ResearchItem = {
 
 export const researchItems: ResearchItem[] = [
   {
+    context: "Recent research",
+    title:
+      "A Novel Technique for Identifying Outliers in Correlated Time Series of River and Groundwater Data",
+    year: "2026",
+    summary:
+      "A co-authored method for finding outliers in river and groundwater monitoring series by using the correlation between related measurement points, published in Hydrology Research.",
+    themes: ["Data quality", "Time series", "Environmental monitoring"],
+    links: [{ label: "Paper", href: "https://doi.org/10.1016/j.hydrch.2026.100050" }]
+  },
+  {
     context: "Recent applied report",
     title: "A Practical Guide to Data Quality in Environmental Water Monitoring",
     year: "2026",
@@ -23,7 +33,7 @@ export const researchItems: ResearchItem[] = [
     ]
   },
   {
-    context: "Recent research",
+    context: "Environmental monitoring",
     title:
       "On Class Imbalance in Machine Learning-Based Taxa Identification: A Comparative Analysis of Mitigation Strategies",
     year: "2026",
